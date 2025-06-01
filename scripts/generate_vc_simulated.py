@@ -226,7 +226,7 @@ def generate_fake_vc_simulated_audio(set_type):
 
         try:
             # Tạo audio fake bằng cách sử dụng text gốc nhưng với giọng của speaker đích
-            waveform = tts.tts(text=text, speaker_wav=full_ref_audio_path)
+            waveform = tts.tts(text=text, speaker_wav=full_ref_audio_path, language="en")
             sample_rate = tts.synthesizer.output_sample_rate  # type: ignore
 
             if not isinstance(waveform, torch.Tensor):
