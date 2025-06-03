@@ -1,9 +1,11 @@
 /audio-env
-/dataset
+/data
 /raw_data
-
+/processed_data
 
 **/__pycache__/
 
+**/fake/
+**/real/
 
 *.rar
