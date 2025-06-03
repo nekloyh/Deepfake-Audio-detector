@@ -147,9 +147,9 @@ Phần này của mã là điểm khởi chạy khi file được thực thi tr�
 
 * Xóa thư mục `CACHE_DIR` nếu nó tồn tại để đảm bảo làm mới hoàn toàn.
 * Tạo lại thư mục `CACHE_DIR`.
-* Định nghĩa hai đối tượng `ModelConfig`: `cnn_config_balanced` và `vit_config_balanced` với các tham số tương tự (8.0 giây, overlap 0.5, cả hai loại augmentation).
+* Định nghĩa hai đối tượng `ModelConfig`: `cnn_config_balanced` và `vit_config_balanced` với các tham số tương tự (8.192 giây, overlap 0.5, cả hai loại augmentation).
 * Khởi tạo `DatasetCreator` với các cấu hình này và gọi `create_cached_datasets()` để tạo dữ liệu.
-* Định nghĩa thêm hai đối tượng `ModelConfig`: `cnn_config_performance` và `vit_config_performance` với các tham số khác nhau (4.0 giây, overlap 0.75 cho CNN; 10.0 giây, overlap 0.0 cho ViT). Điều này cho thấy ý định tạo các bộ dữ liệu được tối ưu hóa cho các mục tiêu hiệu suất khác nhau (ví dụ: tốc độ so với độ chính xác).
+* Định nghĩa thêm hai đối tượng `ModelConfig`: `cnn_config_performance` và `vit_config_performance` với các tham số khác nhau (4.096 giây, overlap 0.75 cho CNN; 10.24 giây, overlap 0.0 cho ViT). Điều này cho thấy ý định tạo các bộ dữ liệu được tối ưu hóa cho các mục tiêu hiệu suất khác nhau (ví dụ: tốc độ so với độ chính xác).
 * Khởi tạo lại `DatasetCreator` với các cấu hình hiệu suất và gọi `create_cached_datasets()` một lần nữa.
 
 ## Ý nghĩa đầu ra hiện tại
