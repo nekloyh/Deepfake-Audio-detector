@@ -25,6 +25,7 @@ def view_spectrogram(
     npy_file_path: str,
     display_type: str = "mel",
     save_path: str = "F:\\Deepfake-Audio-Detector\\tests\\view_spectrogram",
+    vmin_display: float = DataConfig.MASK_REPLACEMENT_VALUE,
 ):
     """
     Tải và hiển thị Mel-spectrogram hoặc spectrogram từ một file .npy.
@@ -71,9 +72,9 @@ def view_spectrogram(
             fmin=DataConfig.FMIN,
             fmax=DataConfig.FMAX,
             hop_length=DataConfig.HOP_LENGTH,
-            cmap="magma",
+            cmap="viridis",
             vmax=0.0,  # Giá trị dB max, thường là 0 dB (ref=np.max)
-            vmin=DataConfig.MASK_REPLACEMENT_VALUE,  # Giá trị dB min cho màu sắc
+            vmin=vmin_display,  # Giá trị dB min cho màu sắc
         )
         plt.colorbar(format="%+2.0f dB")
         plt.title(f"Mel-Spectrogram from {os.path.basename(npy_file_path)}")
@@ -91,9 +92,9 @@ def view_spectrogram(
             x_axis="time",
             y_axis="linear",
             hop_length=DataConfig.HOP_LENGTH,
-            cmap="magma",
+            cmap="viridis",
             vmax=0.0,
-            vmin=DataConfig.MASK_REPLACEMENT_VALUE,
+            vmin=vmin_display,
         )
         plt.colorbar(format="%+2.0f dB")
         plt.title(f"Spectrogram (Linear Freq) from {os.path.basename(npy_file_path)}")
@@ -137,7 +138,12 @@ if __name__ == "__main__":
         default=None,
         help="Đường dẫn để lưu hình ảnh spectrogram (ví dụ: output.png). Nếu không chỉ định, sẽ hiển thị cửa sổ.",
     )
-
+    parser.add_argument(
+        "--vmin",
+        type=float,
+        default=DataConfig.MASK_REPLACEMENT_VALUE,  # Giá trị mặc định mới
+        help="Giá trị dB tối thiểu để hiển thị spectrogram. Giá trị âm. Mặc định là -80.0 dB. Có thể điều chỉnh về -50.0 để hiển thị rõ hơn các chi tiết.",
+    )
     # hiện ảnh lên màn hình
     # python view_spectrogram.py <đường_dẫn_đến_file.npy>
     
@@ -146,4 +152,4 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
 
-    view_spectrogram(args.npy_file, args.type, args.save)
+    view_spectrogram(args.npy_file, args.type, args.save, args.vmin)
