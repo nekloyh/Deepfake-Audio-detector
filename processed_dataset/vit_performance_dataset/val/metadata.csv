@@ -3188,7 +3188,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\5c
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\32a2c0c6c46e2a66fd6448b16117f3bf.npy,fake\tts_basic\1988\1988_1988_148538_000015_000003_000067.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bc5dc18cb4acaafe0ebe687d08467677.npy,fake\tts_basic\1988\1988_1988_147956_000015_000003_000068.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4d0c5395de51547fd7c4dd01256b34ed.npy,fake\tts_basic\6241\6241_6241_66616_000021_000001_000069.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9c15f34bf211568fe61d35fa1e96a600.npy,fake\tts_basic\6241\6241_6241_66616_000021_000001_000069.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\db4106fb8ff86ffbd26d966f76426a14.npy,fake\tts_basic\1673\1673_1673_143397_000003_000007_000070.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\17c0a3c73b7952241b3d51f34b7c7641.npy,fake\tts_basic\7976\7976_7976_110523_000036_000000_000071.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2d1bd5b004b2ef05f943e415ffe4a911.npy,fake\tts_basic\5895\5895_5895_34615_000026_000006_000072.wav,1,1,0
@@ -3265,7 +3264,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1e
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\61cb7531a8b47a0e7d425b65ea451678.npy,fake\tts_basic\251\251_251_137823_000003_000000_000135.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\25017514541dedf7622c20bd56d8fee0.npy,fake\tts_basic\8842\8842_8842_304647_000034_000002_000136.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\616f3a58659b2a9d9b86ee8ef4c6cb72.npy,fake\tts_basic\3576\3576_3576_138058_000051_000000_000137.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e11f14f4f5ce330a39a71b93e4179cc0.npy,fake\tts_basic\3576\3576_3576_138058_000051_000000_000137.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9fbd84c561ee89da69d25b20edb9a3d7.npy,fake\tts_basic\84\84_84_121550_000311_000000_000138.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2835a364fda546c5327e251e76c93811.npy,fake\tts_basic\2035\2035_2035_152373_000009_000000_000139.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\fb077ede429f4b85dfbba7296ca41b4c.npy,fake\tts_basic\2035\2035_2035_152373_000009_000000_000139.wav,1,1,1
@@ -3274,7 +3272,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2c
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\34c6d933d31f955fdfd5775986aa11ae.npy,fake\tts_basic\2803\2803_2803_161169_000011_000000_000141.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\28e209e44dee187bf2600d56d6bfde6f.npy,fake\tts_basic\84\84_84_121550_000292_000000_000142.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4673fc9551f9466712708635570ea300.npy,fake\tts_basic\3752\3752_3752_4944_000097_000000_000143.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6d95f6012c66e0ca5c06b3aa27d79569.npy,fake\tts_basic\3752\3752_3752_4944_000097_000000_000143.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\53f0fd572f4fd84aedfef5ca39603577.npy,fake\tts_basic\2902\2902_2902_9006_000014_000001_000144.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\be96b89a9116d354901535d30909081b.npy,fake\tts_basic\2412\2412_2412_153954_000005_000002_000145.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\76652f486925c7d5d89a8fd9bc506522.npy,fake\tts_basic\6319\6319_6319_275224_000024_000000_000146.wav,1,1,0
@@ -3433,7 +3430,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4c
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1d4206b521e1d4e3ef456882f33a99ff.npy,fake\tts_basic\2412\2412_2412_153948_000012_000004_000286.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\be8ca56c84051f533920af1be04a687e.npy,fake\tts_basic\3576\3576_3576_138058_000048_000000_000287.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0370d0de46bafcb0018b8bd591b7f904.npy,fake\tts_basic\3576\3576_3576_138058_000048_000000_000287.wav,1,1,1
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\597caf8cad217f5d8d9c53466162fc2f.npy,fake\tts_basic\3576\3576_3576_138058_000048_000000_000287.wav,1,1,2
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0f6efc7efb871ab79ce646c17be12a09.npy,fake\tts_basic\174\174_174_168635_000018_000000_000288.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\77fa5b9602890fc305fdbe116dafc19a.npy,fake\tts_basic\7976\7976_7976_105575_000014_000009_000289.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\54b8a2bc0862d02f437f6fd4b12cc242.npy,fake\tts_basic\2428\2428_2428_83699_000027_000002_000290.wav,1,1,0
@@ -3459,7 +3455,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0d
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0ae987b84f9678ad6901de9162450010.npy,fake\tts_basic\84\84_84_121550_000010_000000_000307.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6987d92111570f549d7f842d03471620.npy,fake\tts_basic\2412\2412_2412_153948_000007_000001_000308.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\381a9eae4d2b20ae7873cd48ece76860.npy,fake\tts_basic\84\84_84_121123_000045_000000_000309.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\deff7f85344466e5c9ff85e292834a7e.npy,fake\tts_basic\84\84_84_121123_000045_000000_000309.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\303fb2d59d3370501552eaf2ada33321.npy,fake\tts_basic\174\174_174_84280_000015_000002_000310.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\702beb15cdbc5974ea746ad61ac66403.npy,fake\tts_basic\174\174_174_84280_000015_000002_000310.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1300baae57fc1f9ee71655c5809ff794.npy,fake\tts_basic\1919\1919_1919_142785_000031_000003_000311.wav,1,1,0
@@ -3502,7 +3497,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bf
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\94a4fd2ddad780bcb819bd3d95446360.npy,fake\tts_basic\6319\6319_6319_275224_000017_000000_000347.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9c009e379ab2c457579fd075514b6763.npy,fake\tts_basic\2428\2428_2428_83705_000016_000002_000348.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e223d8b4ba6d34bb3bf44e271154b1e3.npy,fake\tts_basic\6313\6313_6313_66129_000009_000000_000349.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\536f3fe2baa8fee5fa9b24a1eb590124.npy,fake\tts_basic\6313\6313_6313_66129_000009_000000_000349.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\269fcdd5c038a72668d9c54dc0520783.npy,fake\tts_basic\5536\5536_5536_43363_000010_000002_000350.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\cc9a1eb868d6e5dcb5e6fc070ef2ff86.npy,fake\tts_basic\1272\1272_1272_141231_000021_000003_000351.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\458d7f1e1d3fce60bb24fd65daccd294.npy,fake\tts_basic\2035\2035_2035_147961_000010_000000_000352.wav,1,1,0
@@ -3517,7 +3511,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9d
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\582dab2508efc48b3b3db5c8ab20bccb.npy,fake\tts_basic\6319\6319_6319_275224_000017_000003_000359.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\711e8fd48012a03aacf79d90ba3db77e.npy,fake\tts_basic\84\84_84_121550_000194_000000_000360.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\fe632d7aafc33efa0a87925929eb9746.npy,fake\tts_basic\6345\6345_6345_64257_000009_000014_000361.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\fd7d8af9d8d4a2ccf7c2c72d012312e1.npy,fake\tts_basic\6345\6345_6345_64257_000009_000014_000361.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\90d948e838ac5cbd31f8dbadbf45a5ff.npy,fake\tts_basic\2277\2277_2277_149896_000011_000000_000362.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\26c0408aedd89478054079edab136828.npy,fake\tts_basic\2902\2902_2902_9006_000008_000001_000363.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8bb9e70d4e7d8a24e22db3f17f014886.npy,fake\tts_basic\2902\2902_2902_9006_000008_000001_000363.wav,1,1,1
@@ -3794,7 +3787,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\94
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6f4eb26235fc3d1a916804f271f8b7a9.npy,fake\tts_basic\7976\7976_7976_110124_000016_000000_000602.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4ecb7ea3e692c2f2d5cf3f370a4786f9.npy,fake\tts_basic\3000\3000_3000_15664_000029_000001_000603.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\eb670ffb9ea991e4af03f82c36a04b50.npy,fake\tts_basic\3000\3000_3000_15664_000029_000001_000603.wav,1,1,1
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\14e63f444a7b7a44dc52ac1083d84c64.npy,fake\tts_basic\3000\3000_3000_15664_000029_000001_000603.wav,1,1,2
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\90848ee568249f87aa4a65effc67a3d2.npy,fake\tts_basic\7850\7850_7850_281318_000013_000001_000604.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\24af54ada4b3dd82e43a325591b34a85.npy,fake\tts_basic\2412\2412_2412_153954_000002_000004_000605.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2de46036a21d905d710a1868b2af30c8.npy,fake\tts_basic\2086\2086_2086_149220_000007_000003_000606.wav,1,1,0
@@ -3819,7 +3811,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ea
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\45df8db4a69a3f5156c53b5a29632e35.npy,fake\tts_basic\7850\7850_7850_73752_000009_000000_000619.wav,1,1,2
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6ba388dd9d2c79ace741ae3aea7f22bc.npy,fake\tts_basic\3536\3536_3536_8226_000024_000000_000620.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1c37af75774c92b0bf97f90f9bb4c4b7.npy,fake\tts_basic\3000\3000_3000_15664_000015_000002_000621.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2634a333dd30ca404e7be7172687fa42.npy,fake\tts_basic\3000\3000_3000_15664_000015_000002_000621.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\541305708a1b6f78365b97709e04da06.npy,fake\tts_basic\251\251_251_118436_000007_000000_000622.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\66bc8ead5a60efcdccf646ebab413d9e.npy,fake\tts_basic\3752\3752_3752_4943_000032_000000_000623.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\5fd0b4cad95f989e4a38b7a3d0e28b1d.npy,fake\tts_basic\1462\1462_1462_170145_000014_000001_000624.wav,1,1,0
@@ -3886,7 +3877,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\66
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4711523eec95713ef3b4359b86c0a532.npy,fake\tts_basic\5536\5536_5536_43358_000023_000001_000676.wav,1,1,2
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e502000101ab876ec441b12f0bd60651.npy,fake\tts_basic\84\84_84_121550_000046_000000_000677.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\aaf250e678158663317cfc44ce4f174f.npy,fake\tts_basic\8842\8842_8842_302203_000002_000005_000678.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4ba7d362b1bd6a0d414206c6a8a6c588.npy,fake\tts_basic\8842\8842_8842_302203_000002_000005_000678.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0bcae8c9111fd0874f99879a958255c8.npy,fake\tts_basic\84\84_84_121550_000033_000000_000679.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2f3d45f349a65387a1bee4232df2356b.npy,fake\tts_basic\1919\1919_1919_142785_000012_000001_000680.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\692f8818bb22a1e48e6e6eeb0559ddda.npy,fake\tts_basic\251\251_251_136532_000016_000006_000681.wav,1,1,0
@@ -3897,7 +3887,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b9
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\500d8b8238ed0e4e25e511061156a0f6.npy,fake\tts_basic\2035\2035_2035_147960_000004_000007_000686.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\42fe2ece7ff2583b77ef5be40fdc2a63.npy,fake\tts_basic\2277\2277_2277_149896_000002_000000_000687.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\81fcd26bbc832a453bef5b326cc5be27.npy,fake\tts_basic\6241\6241_6241_61943_000026_000000_000688.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f51e037fb0b9028403ad68646c37c2c0.npy,fake\tts_basic\6241\6241_6241_61943_000026_000000_000688.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\fc46fc7e254dc43c9b31d4436666de7d.npy,fake\tts_basic\8297\8297_8297_275154_000001_000002_000689.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a0294c4808086e1d4931e88020f382ae.npy,fake\tts_basic\8297\8297_8297_275155_000023_000000_000690.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e6a8c7e38fce052a5295bca9382d6b96.npy,fake\tts_basic\7850\7850_7850_73752_000003_000009_000691.wav,1,1,0
@@ -4102,10 +4091,8 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\20
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9b05784c13f3a315b2912e300e0e7998.npy,fake\tts_basic\5895\5895_5895_34615_000013_000001_000863.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0c8b4ddb61996fdba3b80450fd78087f.npy,fake\tts_basic\2902\2902_2902_9008_000006_000004_000864.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\dfb0571b42020a9d76bc43f82c4e6e89.npy,fake\tts_basic\2902\2902_2902_9008_000048_000001_000865.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\96edbe90f377e626ee1e45e88358ee72.npy,fake\tts_basic\2902\2902_2902_9008_000048_000001_000865.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7b809caff138db3eabc69c80933efd64.npy,fake\tts_basic\6313\6313_6313_76958_000059_000000_000866.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\dfe16df5e540ac7a503506dbc52f05a5.npy,fake\tts_basic\8842\8842_8842_302201_000014_000009_000867.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6575af4f9ced7587881eb2836b49729c.npy,fake\tts_basic\8842\8842_8842_302201_000014_000009_000867.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\665dbf161158631e6ee3042d917c2644.npy,fake\tts_basic\2428\2428_2428_83705_000006_000004_000868.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bb66b142939fedba5c5a36512c4bc71a.npy,fake\tts_basic\2428\2428_2428_83705_000006_000004_000868.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3c4e6527b7706abfa3974116a59c1752.npy,fake\tts_basic\7850\7850_7850_73752_000004_000000_000869.wav,1,1,0
@@ -4245,7 +4232,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\15
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ea388188a18c6b8df1e6a2fa36dc33cd.npy,fake\tts_basic\3000\3000_3000_15664_000039_000003_000985.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\03517a0a5668123cd9bd6852b55009e3.npy,fake\tts_basic\5338\5338_5338_24615_000004_000002_000986.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e6b9f04e09fd8b96904562e43ce75b02.npy,fake\tts_basic\2086\2086_2086_149220_000006_000017_000987.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c92aac82535ea7a3a84cf9bb6dbb4617.npy,fake\tts_basic\2086\2086_2086_149220_000006_000017_000987.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ffb3164ee99aa5e376d8a1f04f1e719e.npy,fake\tts_basic\8297\8297_8297_275155_000028_000004_000988.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3386a3611cde3802a0b62db918e918d5.npy,fake\tts_basic\8297\8297_8297_275155_000028_000004_000988.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d622ffc0f435739652d9beedc16122ca.npy,fake\tts_basic\2086\2086_2086_149220_000017_000001_000989.wav,1,1,0
@@ -4280,11 +4266,9 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ac
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\71e6905227dcc346c4d733c1c44479dd.npy,fake\tts_basic\5895\5895_5895_34622_000011_000003_001015.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\67130036271485c097fd5a2adaa946ea.npy,fake\tts_basic\8297\8297_8297_275155_000044_000000_001016.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\adbeb1e066790849a3776658105721c2.npy,fake\tts_basic\1919\1919_1919_142785_000120_000002_001017.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0794714f2bb72e103437c6d1d6ef8941.npy,fake\tts_basic\1919\1919_1919_142785_000120_000002_001017.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\315c6194c2acdb914547ac15989fe231.npy,fake\tts_basic\5694\5694_5694_64038_000008_000002_001018.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\83468c7ac749d0eec30d4da91c877244.npy,fake\tts_basic\6313\6313_6313_76958_000030_000000_001019.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1e19469ae3615256d0e1a1de5f35a190.npy,fake\tts_basic\7850\7850_7850_286674_000013_000004_001020.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3fbd86183f3c73899189fbdc0120f15a.npy,fake\tts_basic\7850\7850_7850_286674_000013_000004_001020.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1ab40e9327274312dcc05148fc8615b6.npy,fake\tts_basic\6345\6345_6345_93306_000057_000004_001021.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7ce7b91980fbb5099521ad37ccc0ca5e.npy,fake\tts_basic\2035\2035_2035_147961_000007_000009_001022.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\fd170bd578a99272e96c351cf529ee66.npy,fake\tts_basic\5895\5895_5895_34615_000020_000007_001023.wav,1,1,0
@@ -4328,7 +4312,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9f
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\52f60491ce2f1fe281a00ce1cc408789.npy,fake\tts_basic\1919\1919_1919_142785_000095_000001_001059.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2837ab886012cb1979a648e6300e5112.npy,fake\tts_basic\84\84_84_121550_000122_000000_001060.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\87b9abf74e366937dad05c3d510e8e24.npy,fake\tts_basic\2035\2035_2035_147960_000012_000005_001061.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b5988d86b5db4cb066c4a2ab6af66419.npy,fake\tts_basic\2035\2035_2035_147960_000012_000005_001061.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1997d5d7591608d93babc158491d6f60.npy,fake\tts_basic\5338\5338_5338_24615_000002_000002_001062.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\78a6675ab45114c65ca55b50d5def95c.npy,fake\tts_basic\7850\7850_7850_281318_000005_000000_001063.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\45dfdc5a59e3f0c3266304def951719a.npy,fake\tts_basic\2086\2086_2086_149214_000006_000000_001064.wav,1,1,0
@@ -4382,7 +4365,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6e
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0657a97d420fc4c9316d1a6efcd9d9c7.npy,fake\tts_basic\2428\2428_2428_83705_000009_000003_001106.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bbae5349f01f6b474d70a07dd33c16d7.npy,fake\tts_basic\1919\1919_1919_142785_000050_000001_001107.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8909ec3fdd654fc7678294000abb2ec6.npy,fake\tts_basic\1272\1272_1272_141231_000011_000004_001108.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\11f11755478d6b01238bb92a6cb1afe8.npy,fake\tts_basic\1272\1272_1272_141231_000011_000004_001108.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\33c26034c7fd85d702c28cceb1e11282.npy,fake\tts_basic\251\251_251_118436_000027_000003_001109.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\634b4e76b227c3f3a7bc5ece067b7ca2.npy,fake\tts_basic\1673\1673_1673_143396_000015_000003_001110.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\80d4467a9d404c2ac3906c02838c7653.npy,fake\tts_basic\84\84_84_121550_000195_000000_001111.wav,1,1,0
@@ -4557,7 +4539,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0f
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a324eabc6374a37c9629153754de30ae.npy,fake\tts_basic\5536\5536_5536_43363_000015_000000_001255.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\07f85373618bf3b1079971185d08bc5d.npy,fake\tts_basic\2803\2803_2803_161169_000009_000005_001256.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8f4e7b1d1672cb60c749228194e5bab7.npy,fake\tts_basic\2086\2086_2086_149220_000006_000002_001257.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b81b5b5f6f8fef4488f589832e6ba72f.npy,fake\tts_basic\2086\2086_2086_149220_000006_000002_001257.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a17b393c4d1ba7e0d9899cfe3a6b9554.npy,fake\tts_basic\2803\2803_2803_154328_000073_000000_001258.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bf9373cfdf3579c61979a460f8165d4a.npy,fake\tts_basic\2803\2803_2803_161169_000011_000013_001259.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\5165d37768e77f340e6149f78dc87960.npy,fake\tts_basic\2035\2035_2035_147961_000005_000008_001260.wav,1,1,0
@@ -4618,7 +4599,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1a
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d132c441bf403c7e8e839f2154f36d0e.npy,fake\tts_basic\7850\7850_7850_281318_000001_000004_001306.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4d13752190ac706d43bce6bf3fd5ab61.npy,fake\tts_basic\84\84_84_121550_000247_000000_001307.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b6b1ed07e7a1b1cd6ede910f17c9b43d.npy,fake\tts_basic\2902\2902_2902_9008_000012_000001_001308.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e14dd595e04d07ceae4fab50cb079b5d.npy,fake\tts_basic\2902\2902_2902_9008_000012_000001_001308.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a2a8c53acc5a2ee0f914d53144ef01a6.npy,fake\tts_basic\1919\1919_1919_142785_000020_000001_001309.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1dc3e3994777b7e7a260dc5ed8e81301.npy,fake\tts_basic\251\251_251_118436_000017_000000_001310.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f08004c9699ce4bd5bb08d56a0183a79.npy,fake\tts_basic\2277\2277_2277_149897_000007_000007_001311.wav,1,1,0
@@ -4730,7 +4710,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0a
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\be9be0062d1c960d7c5145074500a03f.npy,fake\tts_basic\2428\2428_2428_83705_000034_000000_001406.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e70313bbfda745ea78505ec73d1fc83c.npy,fake\tts_basic\1673\1673_1673_143396_000019_000001_001407.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c95543fa89e181e53c327d9df56499c1.npy,fake\tts_basic\3170\3170_3170_137482_000003_000005_001408.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d8793e5cffab6301be18d3ddfd1040eb.npy,fake\tts_basic\3170\3170_3170_137482_000003_000005_001408.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\856328f4515e7b3d1996f758abdcd8f7.npy,fake\tts_basic\3752\3752_3752_4944_000088_000001_001409.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0f7988392c113795896708ce8837e5ce.npy,fake\tts_basic\7850\7850_7850_111771_000005_000003_001410.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b3c3079ffe2b0ff6a7e190fa51e20070.npy,fake\tts_basic\2902\2902_2902_9008_000002_000001_001411.wav,1,1,0
@@ -4800,7 +4779,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f5
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\effa119b487662572696c5cc940294fc.npy,fake\tts_basic\1462\1462_1462_170138_000007_000001_001470.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8c713b349509b1f3ad7bd4829d84545f.npy,fake\tts_basic\1462\1462_1462_170138_000020_000000_001471.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e8a4f78abbdf5cf422bc34289d3e212b.npy,fake\tts_basic\3000\3000_3000_15664_000022_000001_001472.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0a2b060cb96c4b512a614b25de4e717f.npy,fake\tts_basic\3000\3000_3000_15664_000022_000001_001472.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\19479b14524d3c6eabd947c29474ccf7.npy,fake\tts_basic\174\174_174_84280_000005_000005_001473.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\04a54130fd814c4cd0c0615b2326401a.npy,fake\tts_basic\5895\5895_5895_34622_000017_000002_001474.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7bfc47f16e1d7d292170bb61f0484400.npy,fake\tts_basic\3000\3000_3000_15664_000011_000005_001475.wav,1,1,0
@@ -4809,7 +4787,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\cb
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d8560870e4333ffce868e0725c0f449c.npy,fake\tts_basic\174\174_174_50561_000063_000002_001477.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4112e0923e45ad062b3308c8f8b7dc5a.npy,fake\tts_basic\3000\3000_3000_15664_000038_000002_001478.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\45059b987a866e19f6f5f8c3c429e129.npy,fake\tts_basic\5895\5895_5895_34622_000040_000000_001479.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c4e32456482c7507608b9a71a1614680.npy,fake\tts_basic\5895\5895_5895_34622_000040_000000_001479.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0f251a308fad20110f099903d5e6b5bd.npy,fake\tts_basic\5536\5536_5536_43358_000011_000005_001480.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\60a725adc4beebd08d0f44806a60b314.npy,fake\tts_basic\2277\2277_2277_149896_000007_000006_001481.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\68c5cb924035ca3152fcc03ec428fbbc.npy,fake\tts_basic\3170\3170_3170_137482_000022_000005_001482.wav,1,1,0
@@ -4817,7 +4794,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7d
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\55ab9d914404eff8172c1c270bd2d04d.npy,fake\tts_basic\6345\6345_6345_93302_000046_000011_001484.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0375fae8fb2b840e94b77e38ee2264d1.npy,fake\tts_basic\2803\2803_2803_154328_000085_000002_001485.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b42f7bdb518f712eff93b7955c6fd52b.npy,fake\tts_basic\2428\2428_2428_83705_000008_000001_001486.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\53af6ab6f8c89162bf328e047399e796.npy,fake\tts_basic\2428\2428_2428_83705_000008_000001_001486.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\380978a0bf02675d0ac98c0708381c07.npy,fake\tts_basic\5536\5536_5536_43363_000002_000000_001487.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9f39e91d3515f8572fb0d5fc10185768.npy,fake\tts_basic\5694\5694_5694_64025_000009_000001_001488.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7b1a6dc44abfd161b1d971703ead276d.npy,fake\tts_basic\84\84_84_121550_000226_000000_001489.wav,1,1,0
@@ -4831,7 +4807,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bc
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\5916618cb14e9fd00d6195b3cb736d27.npy,fake\tts_basic\6345\6345_6345_64257_000012_000002_001496.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c169d6f5857aa62855b2063ccd1d5639.npy,fake\tts_basic\8297\8297_8297_275154_000007_000000_001497.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c2b78656efc2a0527eba4a01d661a62a.npy,fake\tts_basic\3000\3000_3000_15664_000012_000003_001498.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\63daf9f48eb92857c1726fec5ccb0a62.npy,fake\tts_basic\3000\3000_3000_15664_000012_000003_001498.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e6aecac4f66167a1592c01e4170b72e9.npy,fake\tts_basic\6319\6319_6319_64726_000011_000004_001499.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f433a70e4f4a95a8887b855a87762083.npy,fake\tts_basic\2803\2803_2803_154328_000081_000000_001500.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\565ed4735b136996d23c03298b60ed8a.npy,fake\tts_basic\5895\5895_5895_34629_000011_000000_001501.wav,1,1,0
@@ -4903,7 +4878,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\72
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6dba618027559b60640abb2bf174817d.npy,fake\tts_basic\7850\7850_7850_111771_000011_000003_001556.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\15e1d593e62cd7718ee4a578391cec42.npy,fake\tts_basic\3752\3752_3752_4943_000010_000001_001557.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7db4a527913ea3d594e5dc64b3a29b9f.npy,fake\tts_basic\1919\1919_1919_142785_000118_000003_001558.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\17848640003e5497effa9088db49ce74.npy,fake\tts_basic\1919\1919_1919_142785_000118_000003_001558.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a2fa5b077e05da513e2fc58db10e0fb0.npy,fake\tts_basic\2086\2086_2086_149220_000029_000000_001559.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b6991a0ded93c0186c85eed6437b0631.npy,fake\tts_basic\1988\1988_1988_24833_000064_000001_001560.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\77a740bd3a86823d029c0ba077e20364.npy,fake\tts_basic\1462\1462_1462_170138_000006_000004_001561.wav,1,1,0
@@ -5029,10 +5003,8 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d7
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\38790a2a5945d6219697d62d43932069.npy,fake\tts_basic\7976\7976_7976_105575_000007_000007_001670.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d97dd4c84f85fe80e3b98d0bdc51fe84.npy,fake\tts_basic\3576\3576_3576_138058_000037_000000_001671.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1d4dc14a59d3ba0da978fc2cb6486631.npy,fake\tts_basic\8297\8297_8297_275156_000018_000000_001672.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\597ee8a833fe336ef3b52a3a89cb7ea9.npy,fake\tts_basic\8297\8297_8297_275156_000018_000000_001672.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\fa93bdd127b0aafda8312923cee555c0.npy,fake\tts_basic\1993\1993_1993_147965_000005_000001_001673.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4d9801492526154dc84d717d31e81019.npy,fake\tts_basic\5536\5536_5536_43359_000003_000003_001674.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a3d77e88b833ed5384a36d478473e145.npy,fake\tts_basic\5536\5536_5536_43359_000003_000003_001674.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\08fc4252af16df0a15ec59663f1ac468.npy,fake\tts_basic\1673\1673_1673_143396_000014_000009_001675.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ccf261bc479f42c26df131fd80fedf9b.npy,fake\tts_basic\1673\1673_1673_143396_000014_000009_001675.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f2379edc428952e7c26dc38f14b4250e.npy,fake\tts_basic\6319\6319_6319_64726_000015_000010_001676.wav,1,1,0
@@ -5178,7 +5150,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\dc
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b3289ec7a83960252f1da783665dbfd4.npy,fake\tts_basic\6313\6313_6313_66129_000027_000002_001791.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ca617450a1ba1bd90d534d00aa2ed7c8.npy,fake\tts_basic\3000\3000_3000_15664_000040_000001_001792.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\5d14f23f0e2330ae056fe18c122c9e35.npy,fake\tts_basic\3000\3000_3000_15664_000040_000001_001792.wav,1,1,1
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\02e661a6d29c4261e0224b503c593cbe.npy,fake\tts_basic\3000\3000_3000_15664_000040_000001_001792.wav,1,1,2
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\73f69a9f1445b2900f1c83ff67a5d953.npy,fake\tts_basic\2803\2803_2803_161169_000011_000017_001793.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d0ff07f5f35264a5bdcb04a670cd58fb.npy,fake\tts_basic\1993\1993_1993_147965_000007_000000_001794.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0f8ebf1962278679234c636c0d9d084c.npy,fake\tts_basic\2902\2902_2902_9006_000022_000000_001795.wav,1,1,0
@@ -5260,7 +5231,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\dd
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6562da2c40486683ed35d1468261a8bd.npy,fake\tts_basic\2277\2277_2277_149896_000025_000000_001856.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\94e3a2114bfacb1c9e2d571009ca43c9.npy,fake\tts_basic\2086\2086_2086_149220_000045_000003_001857.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ffc18f83faf598c0253813a6657eb94c.npy,fake\tts_basic\2086\2086_2086_149220_000045_000003_001857.wav,1,1,1
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9798807dbb899ba54e17df79aad1ecf1.npy,fake\tts_basic\2086\2086_2086_149220_000045_000003_001857.wav,1,1,2
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\65371abd469bec1a2b106e7ef3621de7.npy,fake\tts_basic\6241\6241_6241_61943_000018_000003_001858.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a05c7b02c4a05918e15f3defdb4240c7.npy,fake\tts_basic\3752\3752_3752_4944_000072_000000_001859.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9edd71e31d46712c6267a094d7cd6180.npy,fake\tts_basic\5895\5895_5895_34615_000020_000001_001860.wav,1,1,0
@@ -5276,7 +5246,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d7
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\da5a68cff2ea3da45153bbc59803855b.npy,fake\tts_basic\6319\6319_6319_57405_000011_000002_001870.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9345ab8b9865770ef9771388c776e39c.npy,fake\tts_basic\5536\5536_5536_43359_000017_000000_001871.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\aca771e2a8a00f2b8c3d2a5c1d2c9a99.npy,fake\tts_basic\2803\2803_2803_154328_000059_000000_001872.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3492f6def2705475fbe563cc73ff2880.npy,fake\tts_basic\2803\2803_2803_154328_000059_000000_001872.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ed6c2f7c23016b06fa0ab9ef2589eef3.npy,fake\tts_basic\6319\6319_6319_275224_000026_000000_001873.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\55ea31a11943857c66de07ac628987cf.npy,fake\tts_basic\5895\5895_5895_34622_000012_000000_001874.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\58e0704c03bfe92996df66419a9bad5c.npy,fake\tts_basic\1673\1673_1673_143397_000003_000006_001875.wav,1,1,0
@@ -5351,7 +5320,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1d
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7c2b0a172068caa82ca12322a09ce255.npy,fake\tts_basic\2803\2803_2803_154328_000007_000000_001935.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d831b4629bbf26d52c70055045a1ebfa.npy,fake\tts_basic\2277\2277_2277_149874_000030_000005_001936.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\405cef1a56a57a394577792500a920c1.npy,fake\tts_basic\6313\6313_6313_76958_000049_000000_001937.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bf65a3a9b8bcb333d83967588488dd62.npy,fake\tts_basic\6313\6313_6313_76958_000049_000000_001937.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\729a7fdac8a02ed85dc3aa987303a775.npy,fake\tts_basic\84\84_84_121550_000191_000000_001938.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0fa33fd7ef2b08da60ec497ef66af57d.npy,fake\tts_basic\6295\6295_6295_64301_000005_000000_001939.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3d83dad7490c38ed7931d062bac0bc79.npy,fake\tts_basic\1462\1462_1462_170138_000008_000004_001940.wav,1,1,0
@@ -5501,7 +5469,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e8
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c1271785222fe04cd49652dd94156968.npy,fake\tts_basic\84\84_84_121550_000303_000000_002063.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\98286c5b6b14dca4f15ccb4b0a93b69f.npy,fake\tts_basic\3536\3536_3536_23268_000040_000002_002064.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\104c778d4e56480d27a7343eeea7bb56.npy,fake\tts_basic\3170\3170_3170_137482_000029_000001_002065.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\de8451253a2c2520be4f75b8060870c1.npy,fake\tts_basic\3170\3170_3170_137482_000029_000001_002065.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\65fc7672981caab64456d97dfe1263a3.npy,fake\tts_basic\5895\5895_5895_34615_000019_000009_002066.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d64e94c5adbedfd57da19666b0e92464.npy,fake\tts_basic\5895\5895_5895_34615_000019_000009_002066.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2c2e60da692c5650c9baa34566590cad.npy,fake\tts_basic\3752\3752_3752_4944_000031_000000_002067.wav,1,1,0
@@ -5509,7 +5476,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\56
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a6ced6387fb1167b563575ba0820747c.npy,fake\tts_basic\7976\7976_7976_110124_000050_000000_002069.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\666d014910e5a18a3acfeccd29c2e80c.npy,fake\tts_basic\174\174_174_168635_000024_000002_002070.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d11efd7d87df2e19becc680de00d03d5.npy,fake\tts_basic\6241\6241_6241_61946_000036_000003_002071.wav,1,1,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6134844c96b0c10e6bc1624870441557.npy,fake\tts_basic\6241\6241_6241_61946_000036_000003_002071.wav,1,1,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c094eca0d0b83f46b7ea3ce10b3507c0.npy,fake\tts_basic\174\174_174_50561_000044_000000_002072.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\966034af3b8dd6776e8bf740191a6e98.npy,fake\tts_basic\1988\1988_1988_147956_000018_000003_002073.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a780225ef4696cc348062076851aef20.npy,fake\tts_basic\1993\1993_1993_147965_000002_000002_002074.wav,1,1,0
@@ -5553,7 +5519,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\00
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\5be879cfd9f0d5b023ff262cfa5baee2.npy,fake\tts_basic\84\84_84_121550_000019_000000_002109.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3969c38a0cafe4e842fa9cadf225e68b.npy,fake\tts_basic\2412\2412_2412_153954_000002_000002_002110.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4adacaed0453fa59433ef4474c88f57a.npy,fake\tts_basic\2412\2412_2412_153954_000002_000002_002110.wav,1,1,1
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1e32ca4be745fd5a9b6a256118058236.npy,fake\tts_basic\2412\2412_2412_153954_000002_000002_002110.wav,1,1,2
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\19e6be536625626ffebfd792cbbc43b3.npy,fake\tts_basic\84\84_84_121123_000022_000002_002111.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\218c406338e37efe638258d03b126a72.npy,fake\tts_basic\2412\2412_2412_153954_000008_000010_002112.wav,1,1,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d64b379d123c5b0a14c4d9d1f0ccfc1f.npy,fake\tts_basic\2428\2428_2428_83705_000015_000004_002113.wav,1,1,0
@@ -6215,7 +6180,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\97
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6fcf16cadc3c8c126096d9ff6b0135ac.npy,fake\vc_basic\2086\2086_2086_149220_000009_000000_000608.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ffd716f7b23bd31b6fc6c3fd04e82a86.npy,fake\vc_basic\7850\7850_7850_286674_000002_000002_000609.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0562b9c10523923273afc30a7826ee6f.npy,fake\vc_basic\7850\7850_7850_111771_000012_000001_000610.wav,1,3,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\cf60610096730f1eb95dd410eee252d9.npy,fake\vc_basic\7850\7850_7850_111771_000012_000001_000610.wav,1,3,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\096960d6ece3ddb5cc467e05f330aaa3.npy,fake\vc_basic\7976\7976_7976_110523_000008_000000_000611.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\40e1c7e2824a24497254028d5efdba7a.npy,fake\vc_basic\6345\6345_6345_93306_000005_000002_000612.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ae085bcf5f1f1b3490ea549a75da5162.npy,fake\vc_basic\7976\7976_7976_105575_000009_000001_000613.wav,1,3,0
@@ -6893,7 +6857,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\74
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bc86f8d7fe5cee1fe269d9ed50aa70f3.npy,fake\vc_basic\2086\2086_2086_149220_000021_000001_001278.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e547fa43ac6c2c87299b07c6cfce7ef1.npy,fake\vc_basic\2086\2086_2086_149220_000021_000001_001278.wav,1,3,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4842eefafae93d503e8108daee53ea10.npy,fake\vc_basic\2035\2035_2035_152373_000010_000008_001279.wav,1,3,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\524db37cf961b2b904e284c3afed8df4.npy,fake\vc_basic\2035\2035_2035_152373_000010_000008_001279.wav,1,3,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f1d8a304168dc63e3c2d80ec32db455d.npy,fake\vc_basic\5338\5338_5338_24615_000000_000002_001280.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\5ce8f473f53d10a116e28cc6d7aee5e9.npy,fake\vc_basic\2412\2412_2412_153954_000004_000004_001281.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a31b35c16be7fd695d58749ec384b132.npy,fake\vc_basic\6345\6345_6345_93306_000019_000004_001282.wav,1,3,0
@@ -7177,7 +7140,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1f
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f0486e7fd4499c461873ee84557498a9.npy,fake\vc_basic\2412\2412_2412_153954_000005_000003_001559.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1c3248ac70d41fddf662ec29cc32cc91.npy,fake\vc_basic\6313\6313_6313_66125_000063_000000_001560.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a084e8a51bf778be6f0797411e40bb8a.npy,fake\vc_basic\7850\7850_7850_111771_000011_000003_001561.wav,1,3,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\23683ec46e5840acab976fa8cb6750b2.npy,fake\vc_basic\7850\7850_7850_111771_000011_000003_001561.wav,1,3,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c7e7928f7d63741c0e2fb1530e8213a0.npy,fake\vc_basic\3752\3752_3752_4943_000010_000001_001562.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\e353486f0ddda00f2b39312ff42d712c.npy,fake\vc_basic\1919\1919_1919_142785_000118_000003_001563.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c2d5be70af2bfadd0a9632c06b980c2b.npy,fake\vc_basic\2086\2086_2086_149220_000029_000000_001564.wav,1,3,0
@@ -7417,7 +7379,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4a
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a4978ea505f21d6ad0530510484723c0.npy,fake\vc_basic\1993\1993_1993_147966_000015_000004_001795.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3170547593ef80330bfe3535119dd866.npy,fake\vc_basic\6313\6313_6313_66129_000027_000002_001796.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\61d668a8d7e83a7534b48b0a9e5ab592.npy,fake\vc_basic\3000\3000_3000_15664_000040_000001_001797.wav,1,3,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\dc578c8d507e6455c697063765f3836f.npy,fake\vc_basic\3000\3000_3000_15664_000040_000001_001797.wav,1,3,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ed7d44bc75b9db90ab0390d1591481a4.npy,fake\vc_basic\2803\2803_2803_161169_000011_000017_001798.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f50a1aea9aeb475ab5cd75e29235df25.npy,fake\vc_basic\1993\1993_1993_147965_000007_000000_001799.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\cfaf5b7733aa0b953d8d137a8166527b.npy,fake\vc_basic\2902\2902_2902_9006_000022_000000_001800.wav,1,3,0
@@ -7449,7 +7410,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\ff
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\881f94a2e4bc693eb977cd3bf229e271.npy,fake\vc_basic\2902\2902_2902_9008_000046_000000_001823.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\7e3d9c713078411cb1120b2399cf72e8.npy,fake\vc_basic\5338\5338_5338_284437_000037_000000_001824.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\1288eb1f5072cbc543ccba1bde84b664.npy,fake\vc_basic\3000\3000_3000_15664_000004_000001_001825.wav,1,3,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\9e69b70c7453b16ce66e7bf41ae8f8cc.npy,fake\vc_basic\3000\3000_3000_15664_000004_000001_001825.wav,1,3,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0975daca11fb4997b835fb99d589e92d.npy,fake\vc_basic\6345\6345_6345_93302_000075_000008_001826.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4244130bd607c0b4090847275c3ae825.npy,fake\vc_basic\7976\7976_7976_110124_000014_000001_001827.wav,1,3,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\28bae796c9f350aa70f14cfca5ea2154.npy,fake\vc_basic\2902\2902_2902_9008_000008_000002_001828.wav,1,3,0
@@ -9510,7 +9470,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\12
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\bff0414fbf61f7617ebbc7211cae3378.npy,fake\vc_simulated\6313\6313_6313_66129_000060_000002_001691.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2645ec04d83d5f84f611c9a8a65a9104.npy,fake\vc_simulated\2277\2277_2277_149897_000006_000004_001692.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8c3a850215472c2bc11d3661b6803a6f.npy,fake\vc_simulated\8297\8297_8297_275155_000004_000000_001693.wav,1,4,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\aee0ff4cc0c2d7b2cfc050bf1de0a84f.npy,fake\vc_simulated\8297\8297_8297_275155_000004_000000_001693.wav,1,4,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6cab94827837ec5d05031a745447f261.npy,fake\vc_simulated\6241\6241_6241_66616_000006_000000_001694.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8d66089ce3d6a71a80b59143ab941250.npy,fake\vc_simulated\1919\1919_1919_142785_000078_000002_001695.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\35d52470b790767de4f7dff31c182372.npy,fake\vc_simulated\2428\2428_2428_83699_000036_000001_001696.wav,1,4,0
@@ -9675,7 +9634,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\b7
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6a9c320fa161477d635a12ecc41052f6.npy,fake\vc_simulated\2412\2412_2412_153954_000007_000006_001851.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\63abe4db82e7fc9775a57db001dd1175.npy,fake\vc_simulated\3170\3170_3170_137482_000031_000000_001852.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\af3df18b69c519659226b789b68d58e4.npy,fake\vc_simulated\6319\6319_6319_64726_000018_000002_001853.wav,1,4,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6ca5563306c79857acba6ce4b581d92b.npy,fake\vc_simulated\6319\6319_6319_64726_000018_000002_001853.wav,1,4,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8e4c6caffa737494aed5a4e7aa77549c.npy,fake\vc_simulated\84\84_84_121550_000049_000000_001854.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\3337d0f2d568b2392ebea6bf3fcd5dc4.npy,fake\vc_simulated\1993\1993_1993_147149_000054_000005_001855.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\f08ce2902aef8fe4b07b428e9a9970a3.npy,fake\vc_simulated\6345\6345_6345_93306_000049_000000_001856.wav,1,4,0
@@ -9775,7 +9733,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\6d48cfd65ef37f598938482d1380f8c5.npy,fake\vc_simulated\251\251_251_118436_000027_000000_001948.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\aa5c8d0ffbb2f2be2208de60a371edfd.npy,fake\vc_simulated\6345\6345_6345_93302_000075_000011_001949.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c7f131f0afd48bf7fa903df9d2bb4863.npy,fake\vc_simulated\5338\5338_5338_284437_000045_000001_001950.wav,1,4,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\13d686bd40420b8e3d2a6ae855ea37c3.npy,fake\vc_simulated\5338\5338_5338_284437_000045_000001_001950.wav,1,4,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\2af89e1e8aac2fc1c5689d105f711656.npy,fake\vc_simulated\2035\2035_2035_147960_000005_000009_001951.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\c958a097ac938002cddf400a20099b37.npy,fake\vc_simulated\6319\6319_6319_57405_000005_000000_001952.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\55f86dd675e115bfdddd4e631688801b.npy,fake\vc_simulated\1988\1988_1988_147956_000019_000004_001953.wav,1,4,0
@@ -9878,7 +9835,6 @@ F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\4b
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\417233496175f115c3862b96d16dae18.npy,fake\vc_simulated\251\251_251_118436_000025_000000_002047.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\d54c7f0ffd2b2b75fdfa1bffd8648065.npy,fake\vc_simulated\3752\3752_3752_4944_000081_000000_002048.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\affdb4d847dc7cec6420c44bf7b6db93.npy,fake\vc_simulated\7850\7850_7850_286674_000003_000000_002049.wav,1,4,0
-F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\8054d99f958d41db8e361ab40320ae97.npy,fake\vc_simulated\7850\7850_7850_286674_000003_000000_002049.wav,1,4,1
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\eb8f8fe8a74aea81e34d8b49ec4fa6e7.npy,fake\vc_simulated\2428\2428_2428_83699_000008_000006_002050.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\a369ca19ab284d500b2147d20117b12f.npy,fake\vc_simulated\1673\1673_1673_143397_000031_000007_002051.wav,1,4,0
 F:\Deepfake-Audio-Detector\processed_dataset\vit_performance_dataset\val\fake\0a01f31bcbe0ff5ba32c4391ec0b0163.npy,fake\vc_simulated\1673\1673_1673_143397_000031_000007_002051.wav,1,4,1
