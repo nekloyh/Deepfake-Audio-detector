@@ -1,64 +1,77 @@
 import pandas as pd
-import os
+from pathlib import Path
 
-# Định nghĩa các hằng số
-MODEL_DATASETS = ['cnn_balanced_dataset', 'vit_balanced_dataset', 'cnn_performance_dataset', 'vit_performance_dataset']
-BASE_DIR = "F:\\Deepfake-Audio-Detector\\processed_dataset\\"
+BASE_DIR = Path("F:/Deepfake-Audio-Detector/datasets/final_dataset")
+MODEL_DATASETS = ["cnn_3s_dataset", "vit_3s_dataset"]
 SET_TYPES = ["train", "val", "test"]
-KAGGLE_PREFIX = "/kaggle/input/"
+KAGGLE_PREFIX = "/kaggle/input"
 
-for model_dataset in MODEL_DATASETS:
-    kaggle_dataset = model_dataset.replace("_", "-")
-    # Xử lý từng set_type
-    for set_type in SET_TYPES:
-        # Đường dẫn đến file metadata.csv gốc
-        metadata_path = os.path.join(BASE_DIR, model_dataset, set_type, "metadata.csv")
 
-        # Kiểm tra file metadata.csv có tồn tại không
-        if not os.path.exists(metadata_path):
-            print(f"File not found: {metadata_path}. Skipping {set_type} set.")
-            continue
-
-        # Đọc file metadata.csv
-        try:
-            df = pd.read_csv(metadata_path)
-        except Exception as e:
-            print(f"Error reading {metadata_path}: {e}. Skipping {set_type} set.")
-            continue
-
-        # Kiểm tra cột 'npy_path' có tồn tại không
-        if "npy_path" not in df.columns:
-            print(
-                f"Column 'npy_path' not found in {metadata_path}. Skipping {set_type} set."
-            )
-            continue
-
-        # Sửa npy_path
-        # Từ: F:\Deepfake-Audio-Detector\processed_dataset\{model_dataset}\{set_type}\{label}\{filename}.npy
-        # Thành: /kaggle/input/{kaggle_dataset}/{model_dataset}/{set_type}/{label}/{filename}.npy
-        df["npy_path"] = df["npy_path"].apply(
-            lambda x: os.path.join(
+def transform_path(x, kaggle_dataset, model_dataset, set_type, skipped):
+    try:
+        parts = Path(x).parts
+        if len(parts) >= 2:
+            new_path = Path(
                 KAGGLE_PREFIX,
                 kaggle_dataset,
                 model_dataset,
                 set_type,
-                x.split(os.sep)[-2],  # Lấy thư mục label (real/fake)
-                x.split(os.sep)[-1],  # Lấy tên file
-            ).replace("\\", "/")  # Đảm bảo dấu phân cách là /
+                parts[-2],
+                parts[-1],
+            )
+            return str(new_path).replace("\\", "/")
+        else:
+            skipped.append(x)
+            return x
+    except Exception:
+        skipped.append(x)
+        return x
+
+
+def process_metadata(model_dataset, set_type):
+    kaggle_dataset = model_dataset.replace("_", "-")
+    metadata_path = BASE_DIR / model_dataset / set_type / "metadata.csv"
+
+    if not metadata_path.exists():
+        print(f"❌ File not found: {metadata_path}. Skipping {set_type} set.")
+        return
+
+    try:
+        df = pd.read_csv(metadata_path)
+    except Exception as e:
+        print(f"❌ Error reading {metadata_path}: {e}. Skipping {set_type} set.")
+        return
+
+    if "npy_path" not in df.columns:
+        print(
+            f"❌ Column 'npy_path' not found in {metadata_path}. Skipping {set_type} set."
+        )
+        return
+
+    skipped = []
+    df["npy_path"] = df["npy_path"].apply(
+        lambda x: transform_path(x, kaggle_dataset, model_dataset, set_type, skipped)
+    )
+
+    if skipped:
+        print(
+            f"⚠️  Skipped {len(skipped)} invalid npy_path rows in {model_dataset}/{set_type}."
         )
 
-        # Đường dẫn đến file kaggle_metadata.csv mới
-        output_metadata_path = os.path.join(BASE_DIR, model_dataset, set_type, "kaggle_metadata.csv")
-        
-        if os.path.exists(output_metadata_path):
-            print(f"Removing existing {output_metadata_path}.")
-            os.remove(output_metadata_path)
-        
-        # Lưu file kaggle_metadata.csv
-        try:
-            df.to_csv(output_metadata_path, index=False)
-            print(f"Created kaggle_metadata.csv for {set_type} at: {output_metadata_path}")
-        except Exception as e:
-            print(f"Failed to save {output_metadata_path}: {e}")
+    output_metadata_path = BASE_DIR / model_dataset / set_type / "kaggle_metadata.csv"
 
-print("Processing completed.")
+    try:
+        df.to_csv(output_metadata_path, index=False)
+        print(
+            f"✅ Created kaggle_metadata.csv for {set_type} at: {output_metadata_path}"
+        )
+    except Exception as e:
+        print(f"❌ Error writing file {output_metadata_path}: {e}")
+
+
+if __name__ == "__main__":
+    for model_dataset in MODEL_DATASETS:
+        for set_type in SET_TYPES:
+            process_metadata(model_dataset, set_type)
+
+    print("🎉 Processing completed.")
