@@ -8,3 +8,5 @@
 
 notebooks/wandb_api_key.txt
 *.rar
+*.wav
+*.flac
