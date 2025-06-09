@@ -1,0 +1,21 @@
+
+train Split:
+total_files: 102896
+missing_files: 0
+unique_shapes: [(224, 224)]
+invalid_shapes: []
+sample_shapes: [(224, 224), (224, 224), (224, 224), (224, 224), (224, 224)]
+
+val Split:
+total_files: 6996
+missing_files: 0
+unique_shapes: [(224, 224)]
+invalid_shapes: []
+sample_shapes: [(224, 224), (224, 224), (224, 224), (224, 224), (224, 224)]
+
+test Split:
+total_files: 14066
+missing_files: 0
+unique_shapes: [(224, 224)]
+invalid_shapes: []
+sample_shapes: [(224, 224), (224, 224), (224, 224), (224, 224), (224, 224)]
