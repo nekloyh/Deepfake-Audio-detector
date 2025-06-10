@@ -1,0 +1,13 @@
+torch
+torchaudio
+onnx
+onnxruntime
+fastapi
+uvicorn[standard]
+python-multipart
+librosa
+soundfile
+transformers
+numpy
+scipy
+Jinja2
