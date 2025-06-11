@@ -1,38 +1,41 @@
-# 1. Base Image
-FROM python:3.10-slim
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
-# 2. Environment Variables
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+# Set environment variables
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-# 3. Working Directory
+# Set the working directory in the container
 WORKDIR /app
 
-# 4. Install System Dependencies
-# libsndfile1 for SoundFile/Librosa, ffmpeg for torchaudio/librosa broader format support
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends libsndfile1 ffmpeg && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Install system dependencies that might be needed by libs like librosa/soundfile
+# (e.g., libsndfile1). This can vary based on the base image and specific needs.
+# For python:3.9-slim, libsndfile1 is often needed.
+RUN apt-get update && apt-get install -y --no-install-recommends libsndfile1 ffmpeg && rm -rf /var/lib/apt/lists/*
 
-# 5. Copy requirements.txt and Install Python Dependencies
-# This is done before copying app code to leverage Docker cache
+# Copy the requirements file into the container
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
 
-# 6. Copy Application Code
-# Copy web application
-COPY webapp/ ./webapp/
-# Copy ONNX models (assuming they are present in the build context)
-COPY onnx_models/ ./onnx_models/
-# Copy model definitions (potentially needed by convert_to_onnx.py or if models have complex structures)
-COPY demo_workflow/models/ ./demo_workflow/models/
-# Copy the ONNX conversion script
-COPY convert_to_onnx.py .
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# 7. Expose Port
-EXPOSE 8000
+# Copy the application code into the container
+COPY ./app ./app
 
-# 8. Default Command
-# Runs the FastAPI application using Uvicorn
-CMD ["uvicorn", "webapp.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Copy ONNX models into the image.
+# This assumes models are in app/models_onnx/ as per current structure.
+# If MODEL_DIR is configurable and set to a path outside /app, adjust accordingly
+# or use volumes. For bundling, this path is fine.
+COPY ./app/models_onnx ./app/models_onnx
+
+# Expose the port the app runs on
+# This should match the port Uvicorn runs on, fetched from settings.PORT (default 8000)
+EXPOSE 8000 
+
+# Define the command to run the application
+# Uvicorn will listen on the host and port defined in settings (via .env or defaults)
+# The CMD here uses "0.0.0.0" and "8000" directly. If settings.HOST/PORT are different
+# and not passed as ENV to container, this might mismatch. However, 0.0.0.0:8000 is standard for containers.
+# The config.py defaults to 0.0.0.0 and 8000, so this is consistent.
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -1,4 +1,5 @@
 /audio-env
+/deploy-env
 
 **/__pycache__/
 **/wandb/
