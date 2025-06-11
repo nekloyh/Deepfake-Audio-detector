@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     # Audio processing settings (keeping these as fixed defaults for now, can be env vars if needed)
     TARGET_SAMPLE_RATE: int = 16000
     CHUNK_DURATION_SECONDS: float = 3.0
-    N_MELS: int = 224
+    N_MELS: int = 128
     SPECTROGRAM_WIDTH: int = 224
     N_FFT: int = 2048  # FFT window size for STFT.
     HOP_LENGTH: int = 512  # Hop length for STFT (number of samples between frames).
@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     # (max_signal_power - TOP_DB) are floored. Effectively defines the dynamic range.
 
     # New parameters
-    SEGMENT_OVERLAP_SECONDS: float = 0.5
+    SEGMENT_OVERLAP_SECONDS: float = 1.5
     IMAGE_SIZE: int = 224
     PIXEL_MEAN: float = 0.449
     PIXEL_STD: float = 0.226

@@ -26,23 +26,7 @@ def segment_audio(
     segment_duration: float = settings.CHUNK_DURATION_SECONDS,
     overlap_duration: float = settings.SEGMENT_OVERLAP_SECONDS,
 ) -> list[np.ndarray]:
-    """
-    Loads an audio file and segments it into fixed-duration chunks.
-    Each chunk is either padded with zeros or truncated to `segment_duration`.
-
-    Args:
-        audio_path (str): Path to the input audio file (.wav, .flac).
-        target_sr (int): Target sample rate for loading.
-        segment_duration (float): Target duration of each segment in seconds.
-        overlap_duration (float): Overlap between consecutive segments in seconds.
-
-    Returns:
-        list[np.ndarray]: A list of numpy arrays, where each array is a segment
-                          of `segment_duration` length, sampled at `target_sr`.
-                          Returns an empty list if loading fails.
-    """
     try:
-        # Load audio with librosa
         y, _ = librosa.load(audio_path, sr=target_sr, mono=True)
         total_samples = len(y)
         segment_samples = int(segment_duration * target_sr)
@@ -50,25 +34,22 @@ def segment_audio(
         step_samples = segment_samples - overlap_samples
         segments = []
 
-        # Load audio with pydub for silence detection
         audio = (
             AudioSegment.from_file(audio_path).set_frame_rate(target_sr).set_channels(1)
         )
         audio_len_ms = len(audio)
         target_len_ms = int(segment_duration * 1000)
 
-        # Iterate through all possible segments
+        silent_segments = 0
         for i in range(0, total_samples, step_samples):
             segment_start = i
             segment_end = min(i + segment_samples, total_samples)
             segment = y[segment_start:segment_end]
 
-            # Extract corresponding pydub segment for silence detection
             start_ms = int(segment_start * 1000 / target_sr)
             end_ms = min(start_ms + target_len_ms, audio_len_ms)
             segment_audio = audio[start_ms:end_ms]
 
-            # Pad the final segment if it's shorter than segment_duration
             if len(segment) < segment_samples:
                 segment = np.pad(
                     segment, (0, segment_samples - len(segment)), "constant"
@@ -77,14 +58,19 @@ def segment_audio(
                     duration=target_len_ms - len(segment_audio)
                 )
 
-            # Check silence ratio
-            silence_ratio = detect_silence_ratio(segment_audio)
+            silence_ratio = detect_silence_ratio(
+                segment_audio, silence_thresh=-50, min_silence_len=500
+            )
+            print(f"Segment {i // step_samples + 1}: silence_ratio={silence_ratio:.2f}")
             if silence_ratio <= 0.7:
                 segments.append(segment)
+            else:
+                silent_segments += 1
 
+        print(
+            f"Total segments: {len(segments)}, silent segments skipped: {silent_segments}"
+        )
         return segments
-
     except Exception as e:
         print(f"Error loading or segmenting audio {audio_path}: {e}")
         return []
-

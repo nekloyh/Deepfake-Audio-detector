@@ -27,21 +27,14 @@ def create_mel_spectrogram(
     n_fft: int = settings.N_FFT,
     hop_length: int = settings.HOP_LENGTH,
 ) -> Optional[np.ndarray]:
-    """
-    Creates a Mel spectrogram from an audio waveform.
-    Matches the core logic from 7_convert_mel-spectrograms.ipynb.
-
-    Args:
-        audio_waveform (np.ndarray): Audio waveform.
-        sr (int): Sample rate.
-        n_mels (int): Number of Mel bands.
-        n_fft (int): FFT window size.
-        hop_length (int): Number of samples between successive frames.
-
-    Returns:
-        np.ndarray: Log Mel spectrogram (dB scale).
-    """
     if audio_waveform is None or len(audio_waveform) == 0:
+        print("Invalid audio waveform: empty or None")
+        return None
+
+    # Kiểm tra năng lượng của waveform
+    energy = np.sum(audio_waveform ** 2)
+    if energy < 1e-6:
+        print("Audio waveform has very low energy, likely silent")
         return None
 
     try:
@@ -55,6 +48,10 @@ def create_mel_spectrogram(
             fmax=8000.0
         )
         log_mel_spectrogram = librosa.power_to_db(mel_spec, ref=np.max)
+        # Kiểm tra độ biến thiên của spectrogram
+        if np.std(log_mel_spectrogram) < 1e-3:
+            print("Spectrogram has low variance, may lack discriminative features")
+            return None
         return log_mel_spectrogram
     except Exception as e:
         print(f"Error creating Mel-spectrogram: {e}")

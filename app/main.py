@@ -86,6 +86,7 @@ async def load_models():
                     "cnn_conv_channels": [32, 64, 128],
                     "cnn_pool_after_conv": [True, True, True],
                     "linear_output_units_1st_fc": 192,
+                    "dropout": 0.1,  # Added to match training
                 }
                 model = CNN_Audio(**cnn_params)
             elif model_name == "cnn_large":
@@ -95,6 +96,7 @@ async def load_models():
                     "cnn_conv_channels": [64, 128, 256, 512, 512],
                     "cnn_pool_after_conv": [True, True, True, True, False],
                     "linear_output_units_1st_fc": 192,  # Note: Same as cnn_small. Confirm if intended.
+                    "dropout": 0.1,  # Added to match training
                 }
                 model = CNN_Audio(**cnn_params)
             elif model_name == "vit_small":

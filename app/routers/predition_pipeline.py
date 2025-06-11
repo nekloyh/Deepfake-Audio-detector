@@ -155,43 +155,17 @@ def predict_audio_file(
     aggregation_method: str = "mean_probs",
 ) -> Tuple[np.ndarray, np.ndarray, str, int, int]:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device} for prediction for audio: {audio_path}")
     model.to(device)
+    model.eval()  # Đảm bảo mô hình ở chế độ đánh giá
+    print(f"Using device: {device} for prediction for audio: {audio_path}")
 
-    print(
-        f"Segmenting audio file: {audio_path} into {settings.CHUNK_DURATION_SECONDS}s chunks..."
+    audio_segments = segment_audio(
+        audio_path,
+        target_sr=settings.TARGET_SAMPLE_RATE,
+        segment_duration=settings.CHUNK_DURATION_SECONDS,
+        overlap_duration=getattr(settings, "SEGMENT_OVERLAP_SECONDS", 0.0),
     )
-    try:
-        audio_segments = segment_audio(
-            audio_path,
-            target_sr=settings.TARGET_SAMPLE_RATE,
-            segment_duration=settings.CHUNK_DURATION_SECONDS,
-            overlap_duration=getattr(settings, "SEGMENT_OVERLAP_SECONDS", 0.0),
-        )
-    except Exception as e:
-        print(f"Error segmenting audio file {audio_path}: {e}")
-        num_classes = len(settings.LABELS)
-        return (
-            np.zeros(num_classes),
-            np.zeros(num_classes),
-            "segmentation_failed",
-            -1,
-            0,
-        )
-
     print(f"Created {len(audio_segments)} segments from {audio_path}.")
-    if not audio_segments:
-        print(
-            f"No segments created for {audio_path}. Check audio file duration or format."
-        )
-        num_classes = len(settings.LABELS)
-        return (
-            np.zeros(num_classes),
-            np.zeros(num_classes),
-            "no_segments",
-            -1,
-            0,
-        )
 
     all_logits: List[torch.Tensor] = []
     valid_segments_count = 0
@@ -201,36 +175,30 @@ def predict_audio_file(
         if logits is not None:
             all_logits.append(logits)
             valid_segments_count += 1
+            print(f"Segment {i + 1} logits: {logits.numpy()}")
         else:
-            print(f"Skipping segment {i + 1} of {audio_path} due to processing error.")
+            print(f"Skipping segment {i + 1} due to processing error.")
 
-    num_segments_predicted = valid_segments_count
     if not all_logits:
-        print(
-            f"No valid segments processed for {audio_path}. Cannot make a prediction."
-        )
         num_classes = len(settings.LABELS)
         return (
             np.zeros(num_classes),
             np.zeros(num_classes),
             "no_valid_segments",
             -1,
-            num_segments_predicted,
+            valid_segments_count,
         )
 
-    print(
-        f"Aggregating {len(all_logits)} segment predictions for {audio_path} using '{aggregation_method}' method..."
-    )
     final_probabilities, final_logits, predicted_class_name, predicted_class_index = (
         aggregate_predictions(all_logits, aggregation_method)
     )
-
+    print(f"Final probabilities: {final_probabilities}")
     return (
         final_probabilities,
         final_logits,
         predicted_class_name,
         predicted_class_index,
-        num_segments_predicted,
+        valid_segments_count,
     )
 
 @router.post("/predict/")
@@ -290,7 +258,7 @@ async def predict_endpoint(
         if not probabilities_list or any(p < 0 or p > 1 for p in probabilities_list):
             print(f"Invalid probabilities: {probabilities_list}")
             probabilities_list = [0.0] * len(settings.LABELS)
-            class_name = "invalid_probabilities"
+            # class_name = "invalid_probabilities"
             class_idx = -1
             confidence = 0.0
         else:
