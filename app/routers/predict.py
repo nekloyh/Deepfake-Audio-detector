@@ -7,7 +7,7 @@ import io
 import numpy as np
 import librosa
 import soundfile as sf
-import numpy as np  # Already imported, but ensure it's available for type hints if strict
+# Removed duplicate numpy import
 
 # Import settings from app.config
 from ..config import settings
@@ -23,7 +23,7 @@ def process_audio_for_model(audio_chunk: np.ndarray, original_sr: int) -> np.nda
     The audio chunk is resampled, padded/trimmed to CHUNK_DURATION_SECONDS (if not already),
     converted to a Mel spectrogram, converted to dB, normalized to [0,1],
     and padded/trimmed to (N_MELS, SPECTROGRAM_WIDTH).
-    The result is prepared with batch and channel dimensions for ONNX inference.
+    The result is prepared with batch and channel dimensions for model inference.
     """
     print(
         f"Starting audio processing for chunk... Original SR: {original_sr}, Chunk Samples: {len(audio_chunk)}"
@@ -112,7 +112,7 @@ def process_audio_for_model(audio_chunk: np.ndarray, original_sr: int) -> np.nda
         )
 
         # Clip the values to ensure they are strictly within the [0, 1] range.
-        # This is crucial if the ONNX model strictly expects inputs in this precise range.
+        # This is crucial if the model strictly expects inputs in this precise range.
         normalized_spectrogram = np.clip(normalized_spectrogram, 0, 1)
         print(
             f"Normalized spectrogram to [0,1] range. Shape: {normalized_spectrogram.shape}, Min: {normalized_spectrogram.min():.2f}, Max: {normalized_spectrogram.max():.2f}"
@@ -180,9 +180,9 @@ def process_audio_for_model(audio_chunk: np.ndarray, original_sr: int) -> np.nda
         # Common shape for CNNs: (batch_size, channels, height, width).
         # For a single grayscale spectrogram, channels = 1, batch_size = 1.
         input_tensor = processed_spectrogram[np.newaxis, np.newaxis, :, :]
-        print(f"Final input tensor shape for ONNX model: {input_tensor.shape}")
+        print(f"Final input tensor shape for the model: {input_tensor.shape}")
 
-        # Ensure the final tensor is float32, as typically required by ONNX models.
+        # Ensure the final tensor is float32, as typically required by PyTorch models.
         return input_tensor.astype(np.float32)
 
     except sf.LibsndfileError as lse:

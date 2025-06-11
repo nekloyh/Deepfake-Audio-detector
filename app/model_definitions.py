@@ -133,9 +133,7 @@ class ViT_Audio(nn.Module):
         cls_tokens = self.cls_token.expand(b, -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
         x = x + self.pos_embed  # Positional embedding
-        x = self.transformer(
-            x
-        )  # Chú ý rằng PyTorch's TransformerEncoderLayer/Encoder tự xử lý dropout nội bộ
+        x = self.transformer(x)  # Chú ý rằng PyTorch's TransformerEncoderLayer/Encoder tự xử lý dropout nội bộ
 
         cls_token_final = x[:, 0]
         x = self.ln(cls_token_final)

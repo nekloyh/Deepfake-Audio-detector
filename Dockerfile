@@ -24,10 +24,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY ./app ./app
 
 # Copy ONNX models into the image.
-# This assumes models are in app/models_onnx/ as per current structure.
+# This assumes models are in app/models/ as per current structure.
 # If MODEL_DIR is configurable and set to a path outside /app, adjust accordingly
 # or use volumes. For bundling, this path is fine.
-COPY ./app/models_onnx ./app/models_onnx
+COPY ./app/models ./app/models
 
 # Expose the port the app runs on
 # This should match the port Uvicorn runs on, fetched from settings.PORT (default 8000)

@@ -20,18 +20,15 @@ def test_process_audio_output_characteristics():
     duration = 1.0  # 1 second of audio
     frequency = 440.0  # A4 note
 
-    print("Generating dummy audio...")
     t = np.linspace(0, duration, int(sr * duration), endpoint=False)
     audio_np = 0.5 * np.sin(2 * np.pi * frequency * t)
-
-    audio_bytes_io = io.BytesIO()
-    sf.write(audio_bytes_io, audio_np, sr, format="WAV", subtype="PCM_16")
-    audio_bytes = audio_bytes_io.getvalue()
-    print(f"Generated dummy audio: {len(audio_bytes)} bytes")
+    print(
+        f"Generated dummy audio numpy array with shape: {audio_np.shape} and sr: {sr}"
+    )
 
     print("Processing audio...")
     try:
-        output_tensor = process_audio_for_model(audio_bytes)
+        output_tensor = process_audio_for_model(audio_np, sr)
     except Exception as e:
         print(f"ERROR during process_audio_for_model: {e}")
         import traceback
