@@ -1,74 +1,11 @@
 import torch
 import torch.nn as nn
-from dataclasses import dataclass, field
-
-
-# Define Config class (copied from models/convert_cnn_small_to_onnx.py)
-@dataclass
-class Config:
-    # Data processing parameters
-    SEED: int = 42
-    SR: int = 16000
-    N_FFT: int = 2048
-    HOP_LENGTH: int = 512
-    N_MELS: int = 128
-    FMIN: float = 0.0
-    FMAX: float = 8000.0
-    NUM_TIME_MASKS: int = 2
-    NUM_FREQ_MASKS: int = 2
-    TIME_MASK_MAX_WIDTH: int = 30
-    FREQ_MASK_MAX_WIDTH: int = 15
-    MASK_REPLACEMENT_VALUE: float = -80.0
-    NORM_EPSILON: float = 1e-6
-    LOUDNESS_LUFS: float = -23.0
-    USE_GLOBAL_NORMALIZATION: bool = True
-    USE_RANDOM_CROPPING: bool = True
-    CACHE_DIR_BASE: str = "/kaggle/input/cnn-3s-dataset"
-    DATASET_SUBDIR: str = "cnn_3s_dataset"
-    train_dir: str = "train"
-    val_dir: str = "val"
-    test_dir: str = "test"
-    metadata_file: str = "kaggle_metadata.csv"
-
-    # Model architecture
-    img_size: int = 224
-    num_classes: int = 2
-    in_channels: int = 1
-    dropout: float = 0.1
-
-    # CNN specific architecture parameters
-    cnn_conv_channels: list[int] = field(default_factory=list)
-    cnn_pool_after_conv: list[bool] = field(default_factory=list)
-    linear_output_units_1st_fc: int = 512
-
-    # Training parameters
-    learning_rate: float = 1e-4
-    batch_size: int = 32
-    epochs: int = 20
-    weight_decay: float = 1e-4
-    num_workers: int = 4
-
-    # Data augmentation
-    apply_augmentation: bool = True
-    augmentation_prob: float = 0.5
-    audio_length_seconds: float = 3.0
-    overlap_ratio: float = 0.5
-
-    model_size: str = ""
-    dataset_name: str = ""
-
-    def validate(self):
-        assert self.learning_rate > 0, "learning_rate must be positive"
-        assert self.batch_size > 0, "batch_size must be positive"
-        assert self.epochs > 0, "epochs must be positive"
-        assert self.num_workers >= 0, "num_workers must be non-negative"
-        assert len(self.cnn_conv_channels) == len(self.cnn_pool_after_conv), (
-            "cnn_conv_channels and cnn_pool_after_conv must have the same length"
-        )
+from einops.layers.torch import Rearrange
+from dataclasses import field  # dataclass is no longer used
 
 
 # Define CNN_Audio class (copied from models/convert_cnn_small_to_onnx.py)
-class CNN_Audio(torch.nn.Module):
+class CNN_Audio(nn.Module):
     def __init__(
         self,
         img_size: int,
@@ -77,7 +14,7 @@ class CNN_Audio(torch.nn.Module):
         linear_output_units_1st_fc: int,
         cnn_conv_channels: list[int],
         cnn_pool_after_conv: list[bool],
-        dropout: float = 0.1,
+        dropout: float = 0.3,
     ):
         super(CNN_Audio, self).__init__()
         self.in_channels = in_channels
@@ -87,53 +24,119 @@ class CNN_Audio(torch.nn.Module):
         self.dropout = dropout
         self.num_classes = num_classes
 
+        # Build convolutional layers with proper architecture
         layers = []
         in_dim = self.in_channels
 
         for i, out_dim in enumerate(self.cnn_conv_channels):
+            # Convolutional block
             layers.append(
-                torch.nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1, bias=False)
+                nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1, bias=False)
             )
-            layers.append(torch.nn.BatchNorm2d(out_dim))
-            layers.append(torch.nn.ReLU(inplace=True))
+            layers.append(nn.BatchNorm2d(out_dim))
+            layers.append(nn.ReLU(inplace=True))
 
+            # Optional pooling
             if self.cnn_pool_after_conv[i]:
-                layers.append(torch.nn.MaxPool2d(kernel_size=2, stride=2))
+                layers.append(nn.MaxPool2d(kernel_size=2, stride=2))
 
-            layers.append(torch.nn.Dropout2d(self.dropout))
+            # Dropout for regularization
+            layers.append(nn.Dropout2d(self.dropout))
             in_dim = out_dim
 
-        self.conv_layers = torch.nn.Sequential(*layers)
+        self.conv_layers = nn.Sequential(*layers)
 
-        # Calculate output size of conv layers dynamically
+        # Calculate flattened size dynamically
         with torch.no_grad():
-            dummy_input_for_init = torch.randn(
-                1, self.in_channels, self.img_size, self.img_size
-            )
-            dummy_output_conv = self.conv_layers(dummy_input_for_init)
-            # self.flattened_size = dummy_output_conv.view(1, -1).size(1) # Not used directly
+            dummy_input = torch.randn(1, self.in_channels, self.img_size, self.img_size)
+            dummy_output = self.conv_layers(dummy_input)
+            self.flattened_size = dummy_output.view(1, -1).size(1)
 
-        self.adaptive_pool = torch.nn.AdaptiveAvgPool2d((4, 4))
+        # Adaptive average pooling to reduce feature map size
+        self.adaptive_pool = nn.AdaptiveAvgPool2d((4, 4))
 
+        # Calculate size after adaptive pooling
         with torch.no_grad():
-            dummy_pooled = self.adaptive_pool(dummy_output_conv)
+            dummy_pooled = self.adaptive_pool(dummy_output)
             self.pooled_size = dummy_pooled.view(1, -1).size(1)
 
-        self.classifier = torch.nn.Sequential(
-            torch.nn.Linear(self.pooled_size, linear_output_units_1st_fc),
-            torch.nn.ReLU(inplace=True),
-            torch.nn.Dropout(dropout),
-            torch.nn.Linear(
-                linear_output_units_1st_fc, linear_output_units_1st_fc // 2
-            ),
-            torch.nn.ReLU(inplace=True),
-            torch.nn.Dropout(dropout),
-            torch.nn.Linear(linear_output_units_1st_fc // 2, num_classes),
+        # Classifier with proper architecture
+        self.classifier = nn.Sequential(
+            nn.Linear(self.pooled_size, linear_output_units_1st_fc),
+            nn.ReLU(inplace=True),
+            nn.Dropout(dropout),
+            nn.Linear(linear_output_units_1st_fc, linear_output_units_1st_fc // 2),
+            nn.ReLU(inplace=True),
+            nn.Dropout(dropout),
+            nn.Linear(linear_output_units_1st_fc // 2, num_classes),
         )
 
     def forward(self, x):
         x = self.conv_layers(x)
         x = self.adaptive_pool(x)
-        x = x.view(x.size(0), -1)  # Flatten
+        x = x.view(x.size(0), -1)
         x = self.classifier(x)
         return x
+
+
+class ViT_Audio(nn.Module):
+    def __init__(
+        self,
+        img_size,
+        patch_size,
+        num_classes,
+        in_channels,
+        dim,
+        depth,
+        heads,
+        mlp_dim,
+        dropout: float = 0.1,
+    ):  # THÊM dropout VÀO ĐÂY
+        super().__init__()
+        assert img_size % patch_size == 0, (
+            "Image dimensions must be divisible by the patch size."
+        )
+        num_patches = (img_size // patch_size) ** 2
+        patch_dim = in_channels * patch_size * patch_size
+
+        self.patch_size = patch_size
+
+        self.pos_embed = nn.Parameter(torch.randn(1, num_patches + 1, dim))
+        self.cls_token = nn.Parameter(torch.randn(1, 1, dim))
+
+        self.to_patch_embedding = nn.Sequential(
+            nn.Conv2d(
+                in_channels, patch_dim, kernel_size=patch_size, stride=patch_size
+            ),
+            Rearrange("b c h w -> b (h w) c"),
+            nn.LayerNorm(patch_dim),
+            nn.Linear(patch_dim, dim),
+            nn.LayerNorm(dim),
+        )
+
+        transformer_layer = nn.TransformerEncoderLayer(
+            d_model=dim,
+            nhead=heads,
+            dim_feedforward=mlp_dim,
+            dropout=dropout,  # TRUYỀN dropout VÀO ĐÂY
+            batch_first=True,
+        )
+        self.transformer = nn.TransformerEncoder(transformer_layer, num_layers=depth)
+
+        self.ln = nn.LayerNorm(dim)
+        self.mlp_head = nn.Sequential(nn.LayerNorm(dim), nn.Linear(dim, num_classes))
+
+    def forward(self, x):
+        x = self.to_patch_embedding(x)
+        b, n, _ = x.shape
+
+        cls_tokens = self.cls_token.expand(b, -1, -1)
+        x = torch.cat((cls_tokens, x), dim=1)
+        x = x + self.pos_embed  # Positional embedding
+        x = self.transformer(
+            x
+        )  # Chú ý rằng PyTorch's TransformerEncoderLayer/Encoder tự xử lý dropout nội bộ
+
+        cls_token_final = x[:, 0]
+        x = self.ln(cls_token_final)
+        return self.mlp_head(x)

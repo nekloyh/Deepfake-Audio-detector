@@ -1,0 +1,33 @@
+Minimal Run Guide (run_guide.txt)
+
+**1. Setup Environment (if first time):**
+   - Ensure Python 3.8+ is installed.
+   - Create a virtual environment:
+     ```bash
+     python -m venv venv
+     source venv/bin/activate  # On Windows: venv\Scripts\activate
+     ```
+   - Install dependencies:
+     ```bash
+     pip install -r requirements.txt
+     ```
+
+**2. Configure Models (Optional - check defaults):**
+   - Model filenames are configured in `app/config.py` (e.g., `CNN_SMALL_MODEL_NAME`).
+   - Ensure the model files listed in `app/config.py` exist in the `MODEL_DIR` (default: `app/models/`).
+
+**3. Run the Application:**
+   ```bash
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+**4. Accessing the API:**
+   - Open your browser to `http://localhost:8000` for a simple UI.
+   - Or use `curl` for the API endpoint:
+     ```bash
+     # Replace /path/to/your/audio.wav with an actual audio file path
+     curl -X POST -F "audio_file=@/path/to/your/audio.wav" "http://localhost:8000/predict_audio?model_name=cnn_small"
+     ```
+
+Refer to README.md for more detailed instructions, including deployment.
+```

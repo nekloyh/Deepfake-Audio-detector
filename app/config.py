@@ -20,16 +20,14 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     # Model settings
-    MODEL_DIR: str = (
-        "training-phase/models/.pth/"  # Default path, relative to project root
-    )
+    MODEL_DIR: str = "app/models/"  # Default path, relative to project root
     CNN_SMALL_MODEL_NAME: str = "best_model_CNN_Small_cnn_3s_dataset_102208.pth"
     CNN_LARGE_MODEL_NAME: str = "best_model_CNN_Large_cnn_3s_dataset_114040.pth"
 
     # Keep these commented out or assign valid ONNX filenames if you are using them.
     # Otherwise, the model loading logic might try to find non-existent files.
-    # VIT_SMALL_MODEL_NAME: str = "ViT_Small.onnx"
-    # VIT_LARGE_MODEL_NAME: str = "ViT_Large.onnx"
+    VIT_SMALL_MODEL_NAME: str = "best_model_ViT_Small_vit_3s_dataset_040441.pth"
+    VIT_LARGE_MODEL_NAME: str = "best_model_ViT_Large_vit_3s_dataset_044740.pth"
 
     # Audio processing settings (keeping these as fixed defaults for now, can be env vars if needed)
     TARGET_SAMPLE_RATE: int = 16000

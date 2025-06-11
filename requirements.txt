@@ -3,7 +3,6 @@ uvicorn[standard]
 python-multipart
 librosa
 soundfile
-onnxruntime
 numpy
 scipy
 jinja2

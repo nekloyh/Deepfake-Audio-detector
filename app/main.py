@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 # Import the router
 from .routers import predict as predict_router
-from .model_definitions import Config, CNN_Audio
+from .model_definitions import CNN_Audio, ViT_Audio
 
 # --- FastAPI App Initialization ---
 app = FastAPI()
@@ -136,17 +136,45 @@ async def load_models():
             # Instantiate the model
             # Note: The Config class defined above is a general config, not directly the model's hyperparameter config.
             # We are directly passing parameters to CNN_Audio constructor.
-            model = CNN_Audio(
-                img_size=model_config_params["img_size"],
-                in_channels=model_config_params["in_channels"],
-                num_classes=model_config_params["num_classes"],
-                linear_output_units_1st_fc=model_config_params[
-                    "linear_output_units_1st_fc"
-                ],
-                cnn_conv_channels=model_config_params["cnn_conv_channels"],
-                cnn_pool_after_conv=model_config_params["cnn_pool_after_conv"],
-                # dropout can be taken from settings or a default
-            )
+            if "cnn" in model_name:
+                model = CNN_Audio(
+                    img_size=model_config_params["img_size"],
+                    in_channels=model_config_params["in_channels"],
+                    num_classes=model_config_params["num_classes"],
+                    linear_output_units_1st_fc=model_config_params[
+                        "linear_output_units_1st_fc"
+                    ],
+                    cnn_conv_channels=model_config_params["cnn_conv_channels"],
+                    cnn_pool_after_conv=model_config_params["cnn_pool_after_conv"],
+                    # dropout can be taken from settings or a default
+                )
+            elif "vit" in model_name:
+                # Placeholder parameters for ViT_Audio, adjust as necessary
+                # These should ideally be derived from a config or match the saved model's architecture
+                vit_params = {
+                    "img_size": model_config_params["img_size"],
+                    "in_channels": model_config_params["in_channels"],
+                    "num_classes": model_config_params["num_classes"],
+                    "patch_size": 16,  # Example value
+                    "embed_dim": 192,  # Example value for "small" ViT
+                    "depth": 12,  # Example value
+                    "num_heads": 3,  # Example value
+                    "mlp_ratio": 4.0,
+                    "dropout": 0.1,
+                }
+                if model_name == "vit_large":
+                    vit_params["embed_dim"] = 768  # Example for "large" ViT
+                    vit_params["num_heads"] = 12  # Example for "large" ViT
+
+                print(
+                    f"Instantiating ViT_Audio for {model_name} with params: {vit_params}"
+                )
+                model = ViT_Audio(**vit_params)
+            else:
+                print(
+                    f"CRITICAL: Model type for {model_name} not recognized for instantiation."
+                )
+                continue  # Skip to next model
 
             # Load the checkpoint
             # Set weights_only=False if the checkpoint contains more than just model state_dict (e.g., optimizer state)
