@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, File, UploadFile, HTTPException, status, Request
 from typing import Dict, Any
-import onnxruntime as rt
+import torch
 import io
 import numpy as np
 import librosa
@@ -221,35 +221,35 @@ async def predict_audio(
     The model can be selected via the 'model_name' query parameter.
     Defaults to 'cnn_small' if no model_name is provided.
     """
-    # Access the dictionary of loaded ONNX model sessions from the application state.
+    # Access the dictionary of loaded PyTorch model objects from the application state.
     # This dictionary is populated at startup by the `load_models` function in `app/main.py`.
-    onnx_sessions_dict: Dict[str, rt.InferenceSession] = request.app.state.onnx_sessions
+    pytorch_models_dict: Dict[str, torch.nn.Module] = request.app.state.pytorch_models
 
-    # Check if the ONNX sessions dictionary is available (e.g., if models were loaded at startup).
-    if not onnx_sessions_dict:
+    # Check if the PyTorch models dictionary is available.
+    if not pytorch_models_dict:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="ONNX models not loaded or available. Server configuration issue.",
+            detail="PyTorch models not loaded or available. Server configuration issue.",
         )
 
     # Validate the requested model_name:
     # 1. Check if the model_name is a known key (i.e., configured model).
-    if model_name not in onnx_sessions_dict:
+    if model_name not in pytorch_models_dict:
         valid_models = [
-            name for name, sess in onnx_sessions_dict.items() if sess is not None
+            name for name, m in pytorch_models_dict.items() if m is not None
         ]  # List successfully loaded models
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Model '{model_name}' not found. Available models: {valid_models}",
         )
 
-    # 2. Retrieve the specific session associated with the model_name.
-    session = onnx_sessions_dict.get(model_name)
+    # 2. Retrieve the specific model associated with the model_name.
+    model = pytorch_models_dict.get(model_name)
 
-    # 3. Check if the session is None, which means the model was configured but failed to load at startup.
-    if session is None:
+    # 3. Check if the model is None, which means it was configured but failed to load.
+    if model is None:
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,  # 503 Service Unavailable is appropriate here.
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"Model '{model_name}' is configured but was not loaded successfully. Check server logs.",
         )
 
@@ -257,19 +257,38 @@ async def predict_audio(
     audio_bytes = await audio_file.read()
 
     try:
-        # Preprocess the audio data to the format expected by the ONNX model.
+        # Preprocess the audio data. Result is a NumPy array.
         input_data = process_audio_for_model(audio_bytes)
 
-        # Get the expected input name from the ONNX model's metadata.
-        # Assumes the model has one primary input.
-        input_name = session.get_inputs()[0].name
-        # Get the expected output name from the ONNX model's metadata.
-        # Assumes the model has one primary output.
-        output_name = session.get_outputs()[0].name
+        # Convert NumPy array to PyTorch tensor
+        input_tensor = torch.from_numpy(input_data)
 
-        # Run inference
-        outputs = session.run([output_name], {input_name: input_data})
-        prediction = outputs[0]
+        # Get the device of the loaded model and move the input tensor to the same device
+        # This assumes the model has parameters; otherwise, this might need adjustment
+        # or device can be taken from a shared context if models are guaranteed to be on a specific device.
+        try:
+            device = next(model.parameters()).device
+        except StopIteration:
+            # This case might happen if the model has no parameters (e.g., a completely static graph not common in PyTorch nn.Module)
+            # Or if model is an empty nn.Sequential(). Fallback or raise error.
+            # For now, assume CPU if model parameters are not available.
+            # A better approach might be to store device alongside model in app.state or derive from settings.
+            print(
+                "Warning: Could not determine model device from parameters. Assuming CPU."
+            )
+            device = torch.device(
+                "cpu"
+            )  # Fallback, or get device from settings/app.state
+
+        input_tensor = input_tensor.to(device)
+
+        # Run inference with PyTorch model
+        with torch.no_grad():  # Ensure gradients are not computed during inference
+            outputs = model(input_tensor)
+
+        # Assuming 'outputs' is a tensor. Convert it to a NumPy array for post-processing.
+        # Move to CPU if it's on GPU, then detach from graph, then convert to numpy.
+        prediction = outputs.cpu().detach().numpy()
 
         # Post-process the prediction (e.g., softmax, thresholding)
         # Assuming your model outputs probabilities or scores for classes

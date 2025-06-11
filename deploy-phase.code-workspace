@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "F:\\Deepfake-Audio-Detector\\deploy-env\\python.exe",
+    "python.terminal.activateEnvironment": true,
+    "code-runner.executorMap": {
+      "python": "F:\\Deepfake-Audio-Detector\\deploy-env\\python.exe"
+    },
+    "code-runner.clearPreviousOutput": false,
+    "code-runner.runInTerminal": true,
+    "python.languageServer": "Pylance",
+    "python.analysis.extraPaths": [
+      "F:\\Deepfake-Audio-Detector\\deploy-env\\Lib\\site-packages"
+    ]
+  }
+}

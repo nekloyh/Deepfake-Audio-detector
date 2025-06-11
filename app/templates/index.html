@@ -1,23 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deepfake Audio Detector</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <h1>Deepfake Audio Detector</h1>
+     <html lang="en">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Deepfake Audio Detector</title>
+         <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+     </head>
+     <body>
+         <div class="container">
+             <header>
+                 <h1>Deepfake Audio Detector</h1>
+                 <p>Upload your audio file and select a model to detect potential deepfakes.</p>
+             </header>
 
-    <form id="uploadForm" enctype="multipart/form-data">
-        <label for="audioFile">Upload an audio file:</label><br><br>
-        <input type="file" name="file" id="audioFile" accept="audio/*" required>
-        <button type="submit">Detect Deepfake</button>
-    </form>
+             <div class="card" id="upload-card">
+                 <form id="uploadForm" enctype="multipart/form-data">
+                     <label for="audioFile">Upload an audio file (WAV, MP3, FLAC):</label>
+                     <input type="file" name="file" id="audioFile" accept="audio/*" required>
 
-    <h2>Results:</h2>
-    <pre id="resultsOutput">Awaiting submission...</pre>
+                     <label for="modelSelector">Choose a Model:</label>
+                     <select id="modelSelector" name="model_name">
+                         <option value="cnn_small">CNN Small</option>
+                         <option value="cnn_large">CNN Large</option>
+                         <!-- Add more models here if available -->
+                     </select>
 
-    <script src="/static/script.js"></script>
-</body>
-</html>
+                     <button type="submit" class="submit-button">Detect Deepfake</button>
+                 </form>
+             </div>
+
+             <div class="card results-card">
+                 <h2>Results</h2>
+                 <div id="resultsOutput" class="placeholder">
+                     Upload an audio file and click "Detect Deepfake" to see the results.
+                 </div>
+                 <div id="loaderContainer" style="display: none; text-align: center; margin-top: 20px;">
+                    <div class="loader" style="margin: 0 auto;"></div>
+                    <p>Processing, please wait...</p>
+                 </div>
+             </div>
+         </div>
+         
+         <footer class="footer">
+            <p>&copy; 2024 Your Application Name. All rights reserved.</p>
+         </footer>
+
+         <script src="{{ url_for('static', path='script.js') }}"></script>
+     </body>
+     </html>
