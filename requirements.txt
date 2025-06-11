@@ -9,3 +9,4 @@ scipy
 jinja2
 python-dotenv
 pydantic-settings
+torch

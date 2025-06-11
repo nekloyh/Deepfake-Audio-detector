@@ -11,41 +11,43 @@ import numpy as np  # Already imported, but ensure it's available for type hints
 
 # Import settings from app.config
 from ..config import settings
+from ..audio_processing.utils import split_into_chunks  # Added import
 
 router = APIRouter()
 
 
-def process_audio_for_model(audio_data: bytes) -> np.ndarray:
+def process_audio_for_model(audio_chunk: np.ndarray, original_sr: int) -> np.ndarray:
     """
-    Processes raw audio bytes into a normalized Mel spectrogram format expected by the ONNX model.
+    Processes an audio chunk (NumPy array) into a normalized Mel spectrogram.
     Uses settings from app.config for audio processing parameters.
-    The audio is padded/trimmed, converted to a Mel spectrogram, converted to dB,
-    normalized to [0,1] based on MIN_DB_LEVEL and an assumed max of 0dB,
+    The audio chunk is resampled, padded/trimmed to CHUNK_DURATION_SECONDS (if not already),
+    converted to a Mel spectrogram, converted to dB, normalized to [0,1],
     and padded/trimmed to (N_MELS, SPECTROGRAM_WIDTH).
     The result is prepared with batch and channel dimensions for ONNX inference.
     """
-    print("Starting audio processing...")
+    print(
+        f"Starting audio processing for chunk... Original SR: {original_sr}, Chunk Samples: {len(audio_chunk)}"
+    )
     try:
-        # Step 1: Load audio from in-memory bytes using soundfile.
-        # This returns the audio waveform as a NumPy array and its original sample rate.
-        audio, sr = sf.read(io.BytesIO(audio_data))
-        print(f"Original audio loaded: Sample Rate={sr}, Samples={len(audio)}")
+        audio = audio_chunk
+        sr = original_sr
 
-        # Step 2: Resample audio to the target sample rate if it differs.
+        # Step 1: Resample audio to the target sample rate if it differs.
         # Models are typically trained on audio with a specific sample rate (settings.TARGET_SAMPLE_RATE).
         if sr != settings.TARGET_SAMPLE_RATE:
             print(
-                f"Resampling audio from {sr} Hz to {settings.TARGET_SAMPLE_RATE} Hz..."
+                f"Resampling audio chunk from {sr} Hz to {settings.TARGET_SAMPLE_RATE} Hz..."
             )
             audio = librosa.resample(
                 y=audio, orig_sr=sr, target_sr=settings.TARGET_SAMPLE_RATE
             )
             sr = settings.TARGET_SAMPLE_RATE  # Update sample rate to target
-            print(f"Audio resampled: New Samples={len(audio)}")
+            print(f"Audio chunk resampled: New Samples={len(audio)}")
 
-        # Step 3: Pad or trim audio to a consistent fixed duration (settings.CHUNK_DURATION_SECONDS).
-        # This ensures that the resulting spectrogram has a consistent width (time dimension),
-        # which is a common requirement for fixed-input size models.
+        # Step 2: Pad or trim audio to a consistent fixed duration (settings.CHUNK_DURATION_SECONDS).
+        # This ensures that the resulting spectrogram has a consistent width (time dimension).
+        # This step is crucial as split_into_chunks provides chunks of CHUNK_DURATION_SECONDS based on original_sr.
+        # After resampling, the number of samples for that duration might change if original_sr != TARGET_SAMPLE_RATE.
         target_length_samples = int(
             settings.TARGET_SAMPLE_RATE * settings.CHUNK_DURATION_SECONDS
         )
@@ -53,7 +55,7 @@ def process_audio_for_model(audio_data: bytes) -> np.ndarray:
         if len(audio) < target_length_samples:
             # Pad with zeros (silence) at the end if the audio is shorter.
             print(
-                f"Padding audio from {len(audio)} to {target_length_samples} samples."
+                f"Padding audio chunk from {len(audio)} to {target_length_samples} samples."
             )
             audio = np.pad(
                 audio,
@@ -64,12 +66,12 @@ def process_audio_for_model(audio_data: bytes) -> np.ndarray:
         elif len(audio) > target_length_samples:
             # Trim from the end if the audio is longer.
             print(
-                f"Trimming audio from {len(audio)} to {target_length_samples} samples."
+                f"Trimming audio chunk from {len(audio)} to {target_length_samples} samples."
             )
             audio = audio[:target_length_samples]
-        print(f"Audio length after padding/trimming: {len(audio)} samples.")
+        print(f"Audio chunk length after padding/trimming: {len(audio)} samples.")
 
-        # Step 4: Compute Mel spectrogram from the processed audio waveform.
+        # Step 3: Compute Mel spectrogram from the processed audio waveform.
         # Parameters like n_fft, hop_length, and n_mels (number of Mel bands) are crucial
         # for consistency with the model's training data.
         mel_spectrogram = librosa.feature.melspectrogram(
@@ -215,121 +217,128 @@ async def predict_audio(
     request: Request,  # Inject the Request object
     audio_file: UploadFile = File(...),
     model_name: str = "cnn_small",  # Default model is cnn_small
-) -> Dict[str, Any]:
+) -> list:  # Changed return type to list for chunked predictions
     """
-    Receives an audio file, processes it, and makes a prediction using the specified ONNX model.
+    Receives an audio file, splits it into chunks, processes each chunk,
+    and makes a prediction using the specified PyTorch model.
     The model can be selected via the 'model_name' query parameter.
     Defaults to 'cnn_small' if no model_name is provided.
+    Returns a list of prediction results, one for each chunk.
     """
-    # Access the dictionary of loaded PyTorch model objects from the application state.
-    # This dictionary is populated at startup by the `load_models` function in `app/main.py`.
     pytorch_models_dict: Dict[str, torch.nn.Module] = request.app.state.pytorch_models
 
-    # Check if the PyTorch models dictionary is available.
     if not pytorch_models_dict:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="PyTorch models not loaded or available. Server configuration issue.",
         )
 
-    # Validate the requested model_name:
-    # 1. Check if the model_name is a known key (i.e., configured model).
     if model_name not in pytorch_models_dict:
         valid_models = [
             name for name, m in pytorch_models_dict.items() if m is not None
-        ]  # List successfully loaded models
+        ]
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Model '{model_name}' not found. Available models: {valid_models}",
         )
 
-    # 2. Retrieve the specific model associated with the model_name.
     model = pytorch_models_dict.get(model_name)
-
-    # 3. Check if the model is None, which means it was configured but failed to load.
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"Model '{model_name}' is configured but was not loaded successfully. Check server logs.",
         )
 
-    # Read audio file content as bytes.
     audio_bytes = await audio_file.read()
+    predictions_list = []
 
     try:
-        # Preprocess the audio data. Result is a NumPy array.
-        input_data = process_audio_for_model(audio_bytes)
+        # Convert audio_bytes to waveform and sample rate
+        original_waveform, original_sr = sf.read(io.BytesIO(audio_bytes))
 
-        # Convert NumPy array to PyTorch tensor
-        input_tensor = torch.from_numpy(input_data)
-
-        # Get the device of the loaded model and move the input tensor to the same device
-        # This assumes the model has parameters; otherwise, this might need adjustment
-        # or device can be taken from a shared context if models are guaranteed to be on a specific device.
-        try:
-            device = next(model.parameters()).device
-        except StopIteration:
-            # This case might happen if the model has no parameters (e.g., a completely static graph not common in PyTorch nn.Module)
-            # Or if model is an empty nn.Sequential(). Fallback or raise error.
-            # For now, assume CPU if model parameters are not available.
-            # A better approach might be to store device alongside model in app.state or derive from settings.
+        # Ensure waveform is mono
+        if original_waveform.ndim > 1 and original_waveform.shape[1] > 1:
             print(
-                "Warning: Could not determine model device from parameters. Assuming CPU."
+                f"Original waveform is stereo (shape: {original_waveform.shape}), converting to mono."
             )
-            device = torch.device(
-                "cpu"
-            )  # Fallback, or get device from settings/app.state
+            original_waveform = np.mean(original_waveform, axis=1)
 
-        input_tensor = input_tensor.to(device)
+        # Split audio into chunks
+        # split_into_chunks expects sample_rate and chunk_duration_sec
+        # It returns chunks of original_waveform, each approximately chunk_duration_sec long,
+        # potentially padded. These chunks are at original_sr.
+        chunks = split_into_chunks(
+            original_waveform, original_sr, settings.CHUNK_DURATION_SECONDS
+        )
+        print(f"Audio split into {len(chunks)} chunks.")
 
-        # Run inference with PyTorch model
-        with torch.no_grad():  # Ensure gradients are not computed during inference
-            outputs = model(input_tensor)
+        for i, chunk_waveform in enumerate(chunks):
+            print(f"Processing chunk {i + 1}/{len(chunks)}")
+            # process_audio_for_model expects the chunk waveform and its original sample rate.
+            # It will then resample to TARGET_SAMPLE_RATE and process.
+            input_data = process_audio_for_model(
+                chunk_waveform, original_sr
+            )  # Pass original_sr
 
-        # Assuming 'outputs' is a tensor. Convert it to a NumPy array for post-processing.
-        # Move to CPU if it's on GPU, then detach from graph, then convert to numpy.
-        prediction = outputs.cpu().detach().numpy()
+            input_tensor = torch.from_numpy(input_data)
 
-        # Post-process the prediction (e.g., softmax, thresholding)
-        # Assuming your model outputs probabilities or scores for classes
-        # This will depend on what your model outputs.
-
-        # Determine the predicted label and confidence
-        # Using a simple threshold (0.5) for binary classification
-        if (
-            prediction.shape[-1] > 1
-        ):  # If output is multi-class probability (e.g., [prob_real, prob_fake])
-            predicted_index = np.argmax(
-                prediction[0]
-            )  # Get the index of the highest probability
-            confidence = float(prediction[0][predicted_index])
-            result_label = settings.LABELS.get(predicted_index, "unknown")
-        else:  # If output is a single score/probability (e.g., for one class, like deepfake score)
-            # Assuming higher value means 'real' or it's a binary score for one class
-            # Let's stick to the previous thresholding logic for simplicity and alignment with `prediction[0][0] > 0.5`
-            confidence = float(
-                prediction[0][0]
-            )  # This is the score for whatever the first output represents
-            # Determine label based on confidence and REAL_LABEL_INDEX / FAKE_LABEL_INDEX
-            if confidence > 0.5:  # If higher confidence means 'real' as in the comment
-                result_label = settings.LABELS.get(settings.REAL_LABEL_INDEX, "real")
-            else:
-                result_label = settings.LABELS.get(
-                    settings.FAKE_LABEL_INDEX, "deepfake"
+            try:
+                device = next(model.parameters()).device
+            except StopIteration:
+                print(
+                    "Warning: Could not determine model device from parameters. Assuming CPU."
                 )
+                device = torch.device("cpu")
 
-        return {
-            "filename": audio_file.filename,
-            "prediction": result_label,
-            "confidence": confidence,
-            "model_used": model_name,
-            "raw_model_output": prediction.tolist(),  # Include raw output for debugging/info
-        }
+            input_tensor = input_tensor.to(device)
 
+            with torch.no_grad():
+                outputs = model(input_tensor)
+
+            prediction = outputs.cpu().detach().numpy()
+
+            if prediction.shape[-1] > 1:
+                predicted_index = np.argmax(prediction[0])
+                confidence = float(prediction[0][predicted_index])
+                result_label = settings.LABELS.get(predicted_index, "unknown")
+            else:
+                confidence = float(prediction[0][0])
+                if confidence > 0.5:
+                    result_label = settings.LABELS.get(
+                        settings.REAL_LABEL_INDEX, "real"
+                    )
+                else:
+                    result_label = settings.LABELS.get(
+                        settings.FAKE_LABEL_INDEX, "deepfake"
+                    )
+
+            predictions_list.append(
+                {
+                    "filename": audio_file.filename,
+                    "chunk_index": i,
+                    "num_chunks": len(chunks),
+                    "prediction": result_label,
+                    "confidence": confidence,
+                    "model_used": model_name,
+                    "raw_model_output": prediction.tolist(),
+                }
+            )
+
+        return predictions_list
+
+    except sf.LibsndfileError as lse:
+        # This exception should be caught by the process_audio_for_model if it happens during sf.read
+        # However, sf.read is now called before process_audio_for_model. So, catch here.
+        print(f"Error during audio file reading (soundfile): {lse}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Error reading audio file with soundfile: {lse}. Ensure it's a valid audio format.",
+        )
     except ValueError as ve:
+        # This can be raised by process_audio_for_model or other numpy/torch operations
+        print(f"ValueError during prediction processing: {ve}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
     except Exception as e:
-        # Log the full traceback for debugging purposes
         import traceback
 
         print(f"Prediction failed with an unexpected error: {e}")

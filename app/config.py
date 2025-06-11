@@ -20,7 +20,9 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     # Model settings
-    MODEL_DIR: str = "models/.pth/"  # Default path, relative to project root
+    MODEL_DIR: str = (
+        "training-phase/models/.pth/"  # Default path, relative to project root
+    )
     CNN_SMALL_MODEL_NAME: str = "best_model_CNN_Small_cnn_3s_dataset_102208.pth"
     CNN_LARGE_MODEL_NAME: str = "best_model_CNN_Large_cnn_3s_dataset_114040.pth"
 
