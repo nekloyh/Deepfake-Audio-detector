@@ -232,6 +232,9 @@ async def load_models():
             )
     else:
         print("All configured PyTorch models loaded successfully.")
+        print(
+            "Server is running! Access it here: \033[1;37mhttp://127.0.0.1:8000\033[0m"
+        )
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -247,6 +250,7 @@ if __name__ == "__main__":
     print(
         f"Starting Uvicorn server for FastAPI app (app.main) on {settings.HOST}:{settings.PORT}..."
     )
+
     uvicorn.run(
         "app.main:app", host=settings.HOST, port=settings.PORT, reload=settings.DEBUG
     )

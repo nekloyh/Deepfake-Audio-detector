@@ -77,7 +77,7 @@ def load_single_model_for_cli(model_name_to_load: str):
         model_path = os.path.join(settings.MODEL_DIR, settings.VIT_SMALL_MODEL_NAME)
         vit_specific_params = {
             "patch_size": 16,
-            "embed_dim": 192,  # This will be mapped to 'dim'
+            "embed_dim": 128,  # This will be mapped to 'dim'
             "depth": 4,
             "num_heads": 4,  # This will be mapped to 'heads'
             "mlp_ratio": 2.0,  # Used to calculate mlp_dim
