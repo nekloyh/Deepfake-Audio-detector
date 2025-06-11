@@ -3,11 +3,22 @@ import librosa
 import numpy as np
 import torch
 import torchvision.transforms as transforms
-from PIL import Image
+import torch.nn.functional as F
+from typing import Optional
 from app.config import settings
 
-# SpectrogramConfig class removed
-
+try:
+    from app.config import settings
+except ImportError:
+    class Settings:
+        TARGET_SAMPLE_RATE = 16000
+        N_MELS = 128
+        N_FFT = 2048
+        HOP_LENGTH = 512
+        IMAGE_SIZE = 224
+        PIXEL_MEAN = 0.449
+        PIXEL_STD = 0.226
+    settings = Settings()
 
 def create_mel_spectrogram(
     audio_waveform: np.ndarray,
@@ -15,7 +26,7 @@ def create_mel_spectrogram(
     n_mels: int = settings.N_MELS,
     n_fft: int = settings.N_FFT,
     hop_length: int = settings.HOP_LENGTH,
-) -> np.ndarray:
+) -> Optional[np.ndarray]:
     """
     Creates a Mel spectrogram from an audio waveform.
     Matches the core logic from 7_convert_mel-spectrograms.ipynb.
@@ -33,91 +44,66 @@ def create_mel_spectrogram(
     if audio_waveform is None or len(audio_waveform) == 0:
         return None
 
-    mel_spectrogram = librosa.feature.melspectrogram(
-        y=audio_waveform, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels
-    )
-    log_mel_spectrogram = librosa.power_to_db(mel_spectrogram, ref=np.max)
-    return log_mel_spectrogram
+    try:
+        mel_spec = librosa.feature.melspectrogram(
+            y=audio_waveform,
+            sr=sr,
+            n_fft=n_fft,
+            hop_length=hop_length,
+            n_mels=n_mels,
+            fmin=0.0,
+            fmax=8000.0
+        )
+        log_mel_spectrogram = librosa.power_to_db(mel_spec, ref=np.max)
+        return log_mel_spectrogram
+    except Exception as e:
+        print(f"Error creating Mel-spectrogram: {e}")
+        return None
 
 
 def preprocess_spectrogram_to_tensor(
     log_mel_spectrogram: np.ndarray,
     image_size: int = settings.IMAGE_SIZE,
-    mean: list = settings.PIXEL_MEAN,  # Type will be List[float] from settings
-    std: list = settings.PIXEL_STD,  # Type will be List[float] from settings
-) -> torch.Tensor:
+    mean: float = settings.PIXEL_MEAN,  # Type will be float from settings
+    std: float = settings.PIXEL_STD,  # Type will be float from settings
+) -> Optional[torch.Tensor]:
     """
-    Normalizes the spectrogram, converts it to an image, resizes, and transforms to a PyTorch tensor.
-    Matches image processing steps for ViT input.
-
-    Args:
-        log_mel_spectrogram (np.ndarray): Log Mel spectrogram.
-        image_size (int): Target square image size (e.g., 224 for 224x224).
-        mean (list): Mean values for normalization.
-        std (list): Standard deviation values for normalization.
-
-    Returns:
-        torch.Tensor: Preprocessed spectrogram as a PyTorch tensor (C, H, W).
-                      Returns None if input spectrogram is invalid.
-    """
-    if log_mel_spectrogram is None:
+        Normalizes the spectrogram, resizes it, and transforms it to a single-channel PyTorch tensor.
+        
+        Args:
+            log_mel_spectrogram (np.ndarray): Log Mel spectrogram.
+            image_size (int): Target square image size (e.g., 224 for 224x224).
+            mean (float): Mean value for normalization (single channel).
+            std (float): Standard deviation value for normalization (single channel).
+        
+        Returns:
+            torch.Tensor: Preprocessed spectrogram as a single-channel PyTorch tensor ([1, H, W]).
+                        Returns None if input spectrogram is invalid.
+        """
+    if log_mel_spectrogram is None or log_mel_spectrogram.size == 0:
         return None
 
-    # Normalize spectrogram to [0, 255] and convert to uint8 for PIL Image
-    min_val = log_mel_spectrogram.min()
-    max_val = log_mel_spectrogram.max()
-    if max_val == min_val:  # Handle cases of flat spectrograms
-        # Create a black image if all values are the same
-        normalized_spectrogram = np.zeros_like(log_mel_spectrogram, dtype=np.uint8)
-    else:
-        normalized_spectrogram = (
-            (log_mel_spectrogram - min_val) / (max_val - min_val) * 255
-        ).astype(np.uint8)
+    try:
+        # Convert to tensor and resize
+        mel_spec_tensor = torch.from_numpy(log_mel_spectrogram).float().unsqueeze(0).unsqueeze(0)  # Shape: [1, 1, n_mels, frames]
+        mel_spec_scaled = F.interpolate(
+            mel_spec_tensor,
+            size=(image_size, image_size),
+            mode="bilinear",
+            align_corners=False
+        )  # Shape: [1, 1, 224, 224]
 
-    # Convert to PIL Image and ensure 3 channels (RGB)
-    image = Image.fromarray(normalized_spectrogram)
-    image = image.convert("RGB")
+        # Per-sample normalization
+        mel_spec_scaled = mel_spec_scaled.squeeze(0)  # Shape: [1, 224, 224]
+        mean_val = mel_spec_scaled.mean()
+        std_val = mel_spec_scaled.std() + 1e-6  # Avoid division by zero
+        mel_spec_normalized = (mel_spec_scaled - mean_val) / std_val  # Shape: [1, 224, 224]
 
-    # Define the transformations
-    transform = transforms.Compose(
-        [
-            transforms.Resize((image_size, image_size)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=mean, std=std),
-        ]
-    )
+        # Apply image normalization for single channel
+        normalize = transforms.Normalize(mean=[mean], std=[std])  # Single-channel normalization
+        image_tensor = normalize(mel_spec_normalized)  # Shape: [1, 224, 224]
 
-    image_tensor = transform(image)
-    return image_tensor
-
-
-if __name__ == "__main__":
-    print("--- Testing spectrogram_processing.py ---")
-    # Create a dummy audio waveform (e.g., a 3-second segment)
-    sr = settings.TARGET_SAMPLE_RATE
-    duration = 3.0
-    t = np.linspace(0, duration, int(sr * duration), endpoint=False)
-    dummy_waveform = 0.5 * np.sin(2 * np.pi * 1000 * t) + 0.2 * np.random.randn(
-        len(t)
-    )  # 1kHz sine wave + noise
-
-    print(f"Dummy waveform shape: {dummy_waveform.shape}")
-
-    # Step 1: Create Mel spectrogram
-    mel_spec = create_mel_spectrogram(dummy_waveform)
-    if mel_spec is not None:
-        print(f"Mel spectrogram shape: {mel_spec.shape}")
-
-        # Step 2: Preprocess spectrogram to tensor
-        input_tensor = preprocess_spectrogram_to_tensor(mel_spec)
-        if input_tensor is not None:
-            print(f"Preprocessed tensor shape: {input_tensor.shape}")
-            print(f"Preprocessed tensor data type: {input_tensor.dtype}")
-            # You can optionally save the processed image for visual inspection
-            # processed_image = transforms.ToPILImage()(input_tensor)
-            # processed_image.save("processed_spectrogram_test.png")
-            # print("Processed spectrogram image saved as processed_spectrogram_test.png")
-        else:
-            print("Failed to preprocess spectrogram to tensor.")
-    else:
-        print("Failed to create Mel spectrogram.")
+        return image_tensor
+    except Exception as e:
+        print(f"Error preprocessing spectrogram to tensor: {e}")
+        return None

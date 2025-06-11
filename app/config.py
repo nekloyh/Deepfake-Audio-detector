@@ -43,10 +43,10 @@ class Settings(BaseSettings):
     # (max_signal_power - TOP_DB) are floored. Effectively defines the dynamic range.
 
     # New parameters
-    SEGMENT_OVERLAP_SECONDS: float = 0.0
+    SEGMENT_OVERLAP_SECONDS: float = 0.5
     IMAGE_SIZE: int = 224
-    PIXEL_MEAN: List[float] = [0.485, 0.456, 0.406]
-    PIXEL_STD: List[float] = [0.229, 0.224, 0.225]
+    PIXEL_MEAN: float = 0.449
+    PIXEL_STD: float = 0.226
 
     # Labels
     LABELS: dict = {0: "real", 1: "fake"}

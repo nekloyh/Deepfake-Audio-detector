@@ -65,10 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const file = audioFile.files[0];
       const promises = modelNames.map((modelName) => {
         const formData = new FormData();
-        formData.append("audio_file", file); // Use the same file for all models
-        const predictUrl = `/predict_audio?model_name=${encodeURIComponent(
-          modelName
-        )}`;
+        formData.append("file", file); // Use the same file for all models
+        formData.append("model_name", modelName);
+        const predictUrl = `/predict/`;
 
         return fetch(predictUrl, {
           method: "POST",
