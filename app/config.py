@@ -14,7 +14,7 @@ load_dotenv()
 class Settings(BaseSettings):
     APP_NAME: str = "Deepfake Audio Detector"
     # Set to True for enabling uvicorn reload and debugging features.
-    # Pydantic requires a pure boolean value here, without inline comments.
+
     DEBUG: bool = False
     HOST: str = "0.0.0.0"
     PORT: int = 8000
@@ -48,7 +48,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = (
-            ".env"  # Specifies the .env file to load (pydantic-settings specific)
+            ".env" 
         )
         env_file_encoding = "utf-8"
         # Pydantic-settings will automatically attempt to load variables from .env

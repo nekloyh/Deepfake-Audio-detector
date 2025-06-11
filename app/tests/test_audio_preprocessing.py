@@ -2,13 +2,14 @@ import numpy as np
 import soundfile as sf
 import io
 import os
+import sys
 
 # Removed pytest import and PYTEST_AVAILABLE flag
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from app.config import settings
-from app.routers.predict import process_audio_for_model
+from config import settings
+from routers.predict import process_audio_for_model
 # import onnxruntime # Commented out as the inference test is removed for now
-
 
 def test_process_audio_output_characteristics():
     """

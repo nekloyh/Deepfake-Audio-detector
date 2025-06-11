@@ -18,21 +18,18 @@
                      <label for="audioFile">Upload an audio file (WAV, MP3, FLAC):</label>
                      <input type="file" name="file" id="audioFile" accept="audio/*" required>
 
-                     <label for="modelSelector">Choose a Model:</label>
-                     <select id="modelSelector" name="model_name">
-                         <option value="cnn_small">CNN Small</option>
-                         <option value="cnn_large">CNN Large</option>
-                         <!-- Add more models here if available -->
-                     </select>
-
                      <button type="submit" class="submit-button">Detect Deepfake</button>
                  </form>
              </div>
 
              <div class="card results-card">
                  <h2>Results</h2>
-                 <div id="resultsOutput" class="placeholder">
-                     Upload an audio file and click "Detect Deepfake" to see the results.
+                 <div id="resultsContainer">
+                     <div class="placeholder">Upload an audio file and click "Detect Deepfake" to see the results from all models.</div>
+                     <div id="cnn_small_results" class="model-result" style="display: none;"><h4>CNN Small</h4><pre></pre></div>
+                     <div id="cnn_large_results" class="model-result" style="display: none;"><h4>CNN Large</h4><pre></pre></div>
+                     <div id="vit_small_results" class="model-result" style="display: none;"><h4>ViT Small</h4><pre></pre></div>
+                     <div id="vit_large_results" class="model-result" style="display: none;"><h4>ViT Large</h4><pre></pre></div>
                  </div>
                  <div id="loaderContainer" style="display: none; text-align: center; margin-top: 20px;">
                     <div class="loader" style="margin: 0 auto;"></div>
