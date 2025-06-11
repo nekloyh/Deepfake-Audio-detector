@@ -1,3 +1,4 @@
+from typing import List
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 import os
@@ -41,15 +42,19 @@ class Settings(BaseSettings):
     TOP_DB: float = 80.0  # Used with librosa.power_to_db (ref=np.max, top_db=TOP_DB). Values quieter than
     # (max_signal_power - TOP_DB) are floored. Effectively defines the dynamic range.
 
+    # New parameters
+    SEGMENT_OVERLAP_SECONDS: float = 0.0
+    IMAGE_SIZE: int = 224
+    PIXEL_MEAN: List[float] = [0.485, 0.456, 0.406]
+    PIXEL_STD: List[float] = [0.229, 0.224, 0.225]
+
     # Labels
     LABELS: dict = {0: "real", 1: "fake"}
     REAL_LABEL_INDEX: int = 0
     FAKE_LABEL_INDEX: int = 1
 
     class Config:
-        env_file = (
-            ".env" 
-        )
+        env_file = ".env"
         env_file_encoding = "utf-8"
         # Pydantic-settings will automatically attempt to load variables from .env
         # and then from actual environment variables, with environment variables taking precedence.

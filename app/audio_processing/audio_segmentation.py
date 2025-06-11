@@ -4,32 +4,21 @@ import sys
 import librosa
 import numpy as np
 import warnings
-from config import settings
+from app.config import settings
 
 # Suppress librosa warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="librosa")
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-class AudioConfig:
-    """
-    Configuration for general audio processing parameters.
-    These should match your dataset preparation steps.
-    """
-
-    sample_rate = 16000  # Sample rate used in 5_resize_length_for_dataset.ipynb
-    segment_duration = 3.0  # seconds, target duration for each segment
-    # How much to overlap segments. 0 for no overlap, 0.5 for 50% overlap.
-    # Overlap can help capture features at segment boundaries and improve robustness.
-    # Let's start with no overlap for simplicity, but consider adding it if needed.
-    overlap_duration = 0.0
+# AudioConfig class removed
 
 
 def segment_audio(
     audio_path: str,
-    target_sr: int = AudioConfig.sample_rate,
-    segment_duration: float = AudioConfig.segment_duration,
-    overlap_duration: float = AudioConfig.overlap_duration,
+    target_sr: int = settings.TARGET_SAMPLE_RATE,
+    segment_duration: float = settings.CHUNK_DURATION_SECONDS,
+    overlap_duration: float = settings.SEGMENT_OVERLAP_SECONDS,
 ) -> list[np.ndarray]:
     """
     Loads an audio file and segments it into fixed-duration chunks.
@@ -86,7 +75,7 @@ if __name__ == "__main__":
         import soundfile as sf
 
         # Create a dummy 20-second WAV file for testing
-        dummy_sr = AudioConfig.sample_rate
+        dummy_sr = settings.TARGET_SAMPLE_RATE
         dummy_duration = 20  # seconds
         t = np.linspace(
             0, dummy_duration, int(dummy_sr * dummy_duration), endpoint=False
@@ -105,7 +94,7 @@ if __name__ == "__main__":
         if segments:
             print(f"Length of first segment (samples): {len(segments[0])}")
             print(
-                f"Length of first segment (seconds): {len(segments[0]) / AudioConfig.sample_rate}"
+                f"Length of first segment (seconds): {len(segments[0]) / settings.TARGET_SAMPLE_RATE}"
             )
         else:
             print("No segments created.")
@@ -116,11 +105,15 @@ if __name__ == "__main__":
         t_short = np.linspace(
             0,
             dummy_duration_short,
-            int(dummy_sr * dummy_duration_short),
+            int(
+                dummy_sr * dummy_duration_short
+            ),  # Assuming dummy_sr here, as dummy_sr_short is not defined
             endpoint=False,
         )
         dummy_audio_short = 0.3 * np.sin(2 * np.pi * 880 * t_short)
-        sf.write(dummy_audio_short_path, dummy_audio_short, dummy_sr_short)
+        sf.write(
+            dummy_audio_short_path, dummy_audio_short, dummy_sr
+        )  # Assuming dummy_sr here
         print(f"\nDummy 1.5s audio saved to {dummy_audio_short_path}")
 
         segments_short = segment_audio(dummy_audio_short_path)
@@ -128,7 +121,7 @@ if __name__ == "__main__":
         if segments_short:
             print(f"Length of short segment (samples): {len(segments_short[0])}")
             print(
-                f"Length of short segment (seconds): {len(segments_short[0]) / AudioConfig.sample_rate}"
+                f"Length of short segment (seconds): {len(segments_short[0]) / settings.TARGET_SAMPLE_RATE}"
             )
 
     except ImportError:

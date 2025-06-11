@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 # Import the router
-from .routers import predict as predict_router
+from .routers import predition_pipeline as prediction_router
 from .model_definitions import CNN_Audio, ViT_Audio
 from .config import settings
 
@@ -242,7 +242,7 @@ async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-app.include_router(predict_router.router)
+app.include_router(prediction_router.router)
 
 if __name__ == "__main__":
     import uvicorn

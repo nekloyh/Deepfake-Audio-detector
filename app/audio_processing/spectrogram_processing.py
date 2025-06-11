@@ -4,35 +4,17 @@ import numpy as np
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
+from app.config import settings
 
-
-class SpectrogramConfig:
-    """
-    Configuration for Mel spectrogram and image processing parameters.
-    These should match your dataset preparation (7_convert_mel-spectrograms.ipynb)
-    and your ViT model's input expectations (vit-trainer.ipynb).
-    """
-
-    sample_rate = 16000  # Must match AudioConfig.sample_rate
-    n_fft = 1024
-    hop_length = 512
-    n_mels = 128
-    image_size = 224  # Common size for ViT models, verify from your vit-trainer.ipynb
-
-    # Normalization parameters (mean, std) for spectrograms,
-    # often derived from ImageNet if not calculated specifically for your dataset.
-    # These values are common for pre-trained models.
-    # If you calculated specific mean/std from your dataset, USE THOSE HERE.
-    pixel_mean = [0.485, 0.456, 0.406]  # Based on vit-trainer.ipynb
-    pixel_std = [0.229, 0.224, 0.225]  # Based on vit-trainer.ipynb
+# SpectrogramConfig class removed
 
 
 def create_mel_spectrogram(
     audio_waveform: np.ndarray,
-    sr: int = SpectrogramConfig.sample_rate,
-    n_mels: int = SpectrogramConfig.n_mels,
-    n_fft: int = SpectrogramConfig.n_fft,
-    hop_length: int = SpectrogramConfig.hop_length,
+    sr: int = settings.TARGET_SAMPLE_RATE,
+    n_mels: int = settings.N_MELS,
+    n_fft: int = settings.N_FFT,
+    hop_length: int = settings.HOP_LENGTH,
 ) -> np.ndarray:
     """
     Creates a Mel spectrogram from an audio waveform.
@@ -60,9 +42,9 @@ def create_mel_spectrogram(
 
 def preprocess_spectrogram_to_tensor(
     log_mel_spectrogram: np.ndarray,
-    image_size: int = SpectrogramConfig.image_size,
-    mean: list = SpectrogramConfig.pixel_mean,
-    std: list = SpectrogramConfig.pixel_std,
+    image_size: int = settings.IMAGE_SIZE,
+    mean: list = settings.PIXEL_MEAN,  # Type will be List[float] from settings
+    std: list = settings.PIXEL_STD,  # Type will be List[float] from settings
 ) -> torch.Tensor:
     """
     Normalizes the spectrogram, converts it to an image, resizes, and transforms to a PyTorch tensor.
@@ -112,7 +94,7 @@ def preprocess_spectrogram_to_tensor(
 if __name__ == "__main__":
     print("--- Testing spectrogram_processing.py ---")
     # Create a dummy audio waveform (e.g., a 3-second segment)
-    sr = SpectrogramConfig.sample_rate
+    sr = settings.TARGET_SAMPLE_RATE
     duration = 3.0
     t = np.linspace(0, duration, int(sr * duration), endpoint=False)
     dummy_waveform = 0.5 * np.sin(2 * np.pi * 1000 * t) + 0.2 * np.random.randn(
