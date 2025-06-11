@@ -8,4 +8,4 @@ scipy
 jinja2
 python-dotenv
 pydantic-settings
-torch
+torch --index-url https://download.pytorch.org/whl/cpu

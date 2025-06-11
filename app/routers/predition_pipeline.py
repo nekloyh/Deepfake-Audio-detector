@@ -153,10 +153,10 @@ def predict_audio_file(
     model: torch.nn.Module,
     audio_path: str,
     aggregation_method: str = "mean_probs",
-) -> Tuple[np.ndarray, np.ndarray, str, int, int]:
+) -> Tuple[np.ndarray, np.ndarray, str, int, int, List[np.ndarray]]:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-    model.eval()  # Đảm bảo mô hình ở chế độ đánh giá
+    model.eval()
     print(f"Using device: {device} for prediction for audio: {audio_path}")
 
     audio_segments = segment_audio(
@@ -173,21 +173,37 @@ def predict_audio_file(
         print(f"Processing segment {i + 1}/{len(audio_segments)}")
         logits = predict_single_segment(model, segment, device)
         if logits is not None:
+            print(
+                f"Segment {i + 1} logits shape: {logits.shape}, values: {logits.numpy()}"
+            )
             all_logits.append(logits)
             valid_segments_count += 1
-            print(f"Segment {i + 1} logits: {logits.numpy()}")
         else:
             print(f"Skipping segment {i + 1} due to processing error.")
 
     if not all_logits:
         num_classes = len(settings.LABELS)
+        print("No valid logits collected.")
         return (
             np.zeros(num_classes),
             np.zeros(num_classes),
             "no_valid_segments",
             -1,
             valid_segments_count,
+            [],
         )
+
+    raw_logits = []
+    for logit in all_logits:
+        squeezed_logit = logit.squeeze().numpy()
+        if np.any(np.isnan(squeezed_logit)) or np.any(np.isinf(squeezed_logit)):
+            print(f"Warning: Invalid values in logit: {squeezed_logit}")
+            continue
+        print(
+            f"Logit shape after squeeze: {squeezed_logit.shape}, values: {squeezed_logit}"
+        )
+        raw_logits.append(squeezed_logit)
+    print(f"Collected {len(raw_logits)} raw logits for raw_output.")
 
     final_probabilities, final_logits, predicted_class_name, predicted_class_index = (
         aggregate_predictions(all_logits, aggregation_method)
@@ -199,7 +215,9 @@ def predict_audio_file(
         predicted_class_name,
         predicted_class_index,
         valid_segments_count,
+        raw_logits,
     )
+    
 
 @router.post("/predict/")
 async def predict_endpoint(
@@ -208,11 +226,7 @@ async def predict_endpoint(
     model_name: str = Form("vit_small"),
     aggregation_method: str = Form("mean_probs"),
 ):
-    """
-    FastAPI endpoint for audio file prediction.
-    """
     pytorch_models = get_pytorch_models(request)
-
     if not pytorch_models:
         print("Error: PyTorch models not loaded in app.state.")
         raise HTTPException(status_code=503, detail="Models not loaded or unavailable.")
@@ -245,7 +259,7 @@ async def predict_endpoint(
             shutil.copyfileobj(file.file, buffer)
         print(f"Uploaded file '{original_filename}' saved successfully")
 
-        probabilities, logits, class_name, class_idx, segments_processed = (
+        probabilities, logits, class_name, class_idx, segments_processed, raw_logits = (
             predict_audio_file(
                 model=selected_model,
                 audio_path=temp_audio_path,
@@ -254,15 +268,21 @@ async def predict_endpoint(
         )
 
         probabilities_list = probabilities.tolist()
-        # Validate probabilities
+        try:
+            raw_output = [logit.tolist() for logit in raw_logits]
+            print(f"Raw output content (first 2): {raw_output[:2]}")
+        except Exception as e:
+            print(f"Error serializing raw_logits: {e}")
+            raw_output = []
+        print(f"Raw output prepared with {len(raw_output)} entries.")
+
         if not probabilities_list or any(p < 0 or p > 1 for p in probabilities_list):
             print(f"Invalid probabilities: {probabilities_list}")
             probabilities_list = [0.0] * len(settings.LABELS)
-            # class_name = "invalid_probabilities"
             class_idx = -1
             confidence = 0.0
         else:
-            confidence = max(probabilities_list, default=0.0) * 100  # Percentage
+            confidence = max(probabilities_list, default=0.0) * 100
 
         if segments_processed == 0:
             print(f"No valid segments processed for {original_filename}")
@@ -275,6 +295,7 @@ async def predict_endpoint(
                 "confidence": 0.0,
                 "aggregation_method": aggregation_method,
                 "segments_processed": segments_processed,
+                "raw_output": [],
                 "error": "No valid audio segments could be processed. Check audio file format or content.",
             }
 
@@ -296,6 +317,7 @@ async def predict_endpoint(
             "confidence": confidence,
             "aggregation_method": aggregation_method,
             "segments_processed": segments_processed,
+            "raw_output": raw_output,
         }
 
     except HTTPException:

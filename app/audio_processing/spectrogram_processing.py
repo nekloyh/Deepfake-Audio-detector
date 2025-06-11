@@ -16,8 +16,8 @@ except ImportError:
         N_FFT = 2048
         HOP_LENGTH = 512
         IMAGE_SIZE = 224
-        PIXEL_MEAN = 0.449
-        PIXEL_STD = 0.226
+        PIXEL_MEAN = -0.0137
+        PIXEL_STD = 0.7317
     settings = Settings()
 
 def create_mel_spectrogram(

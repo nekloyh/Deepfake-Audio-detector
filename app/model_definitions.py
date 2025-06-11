@@ -14,7 +14,7 @@ class CNN_Audio(nn.Module):
         linear_output_units_1st_fc: int,
         cnn_conv_channels: list[int],
         cnn_pool_after_conv: list[bool],
-        dropout: float = 0.3,
+        dropout: float = 0.1,
     ):
         super(CNN_Audio, self).__init__()
         self.in_channels = in_channels

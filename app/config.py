@@ -45,8 +45,8 @@ class Settings(BaseSettings):
     # New parameters
     SEGMENT_OVERLAP_SECONDS: float = 1.5
     IMAGE_SIZE: int = 224
-    PIXEL_MEAN: float = 0.449
-    PIXEL_STD: float = 0.226
+    PIXEL_MEAN: float = -0.0137
+    PIXEL_STD: float = 0.7317
 
     # Labels
     LABELS: dict = {0: "real", 1: "fake"}
