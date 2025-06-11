@@ -34,10 +34,12 @@ class Settings(BaseSettings):
     CHUNK_DURATION_SECONDS: float = 3.0
     N_MELS: int = 224
     SPECTROGRAM_WIDTH: int = 224
-    N_FFT: int = 2048
-    HOP_LENGTH: int = 512
-    MIN_DB_LEVEL: float = -80.0
-    TOP_DB: float = 80.0
+    N_FFT: int = 2048  # FFT window size for STFT.
+    HOP_LENGTH: int = 512  # Hop length for STFT (number of samples between frames).
+    MIN_DB_LEVEL: float = -80.0  # Minimum decibel level; used as the floor for dB spectrograms before normalization.
+    # Spectrogram values below this are clipped to this level.
+    TOP_DB: float = 80.0  # Used with librosa.power_to_db (ref=np.max, top_db=TOP_DB). Values quieter than
+    # (max_signal_power - TOP_DB) are floored. Effectively defines the dynamic range.
 
     # Labels
     LABELS: dict = {0: "real", 1: "fake"}

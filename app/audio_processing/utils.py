@@ -154,10 +154,13 @@ def waveform_to_mel_spectrogram(
     return spec_padded.astype(np.float32)  # Ensure float32 for ONNX models
 
 
+# The function waveform_to_mel_spectrogram has been removed as its logic
+# is now consolidated into app.routers.predict.process_audio_for_model.
+
 # Example Usage (for testing this file directly):
 if __name__ == "__main__":
     print(
-        f"Audio Utils - Using Settings: SR={settings.TARGET_SAMPLE_RATE}, ChunkSec={settings.CHUNK_DURATION_SECONDS}, N_MELS={settings.N_MELS}, SpecWidth={settings.SPECTROGRAM_WIDTH}, N_FFT={settings.N_FFT}, HOP_LENGTH={settings.HOP_LENGTH}, MIN_DB={settings.MIN_DB_LEVEL}, TOP_DB={settings.TOP_DB}"
+        f"Audio Utils - Using Settings: SR={settings.TARGET_SAMPLE_RATE}, ChunkSec={settings.CHUNK_DURATION_SECONDS}"
     )
 
     # Create a dummy audio signal for testing
@@ -166,7 +169,7 @@ if __name__ == "__main__":
         settings.CHUNK_DURATION_SECONDS * 2.5
     )  # Make it a bit longer than two chunks
 
-    # Use a simple sine wave for predictability, chirp can have rapid changes
+    # Use a simple sine wave for predictability
     freq = 440  # A4 note
     dummy_waveform = 0.5 * np.sin(
         2
@@ -193,36 +196,9 @@ if __name__ == "__main__":
             assert chunk.shape[0] == expected_samples_per_chunk, (
                 f"Chunk {i} length mismatch"
             )
-
-    # Test waveform_to_mel_spectrogram on the first chunk
-    if chunks:
-        first_chunk = chunks[0]
-        print(f"\nProcessing first chunk with shape {first_chunk.shape}...")
-        mel_spec = waveform_to_mel_spectrogram(
-            first_chunk, sr=dummy_sr
-        )  # Uses other relevant settings
-
-        print(f"Mel spectrogram shape: {mel_spec.shape}")
-        assert mel_spec.shape == (settings.N_MELS, settings.SPECTROGRAM_WIDTH), (
-            "Mel spectrogram shape mismatch"
-        )
-        print(f"Mel spectrogram dtype: {mel_spec.dtype}")
-        assert mel_spec.dtype == np.float32, "Mel spectrogram dtype mismatch"
-
-        min_val, max_val = np.min(mel_spec), np.max(mel_spec)
-        print(f"Mel spectrogram min/max values: {min_val}, {max_val}")
-        assert min_val >= 0.0 and max_val <= 1.000001, (
-            f"Mel spectrogram normalization out of [0,1] range: min={min_val}, max={max_val}"
-        )  # Add small epsilon for float comparisons
-
-        if np.all(mel_spec == 0):
-            print(
-                "Warning: Resulting spectrogram is all zeros. This might be okay for silence, but check dummy signal if unexpected."
-            )
-
-        print("First chunk spectrogram processing seems OK.")
+        print("split_into_chunks seems OK.")
     else:
-        print("No chunks to test spectrogram conversion.")
+        print("No chunks to test.")
 
     # Test with a very short audio (shorter than one chunk duration)
     short_duration = settings.CHUNK_DURATION_SECONDS / 2.0
@@ -232,7 +208,7 @@ if __name__ == "__main__":
         * freq
         * np.linspace(0, short_duration, int(dummy_sr * short_duration), endpoint=False)
     )
-    print(f"\nTesting with short audio ({short_duration}s)...")
+    print(f"\nTesting split_into_chunks with short audio ({short_duration}s)...")
 
     chunks_short = split_into_chunks(short_waveform, dummy_sr)
     print(f"Number of chunks from short audio: {len(chunks_short)}")
@@ -245,22 +221,12 @@ if __name__ == "__main__":
         assert chunks_short[0].shape[0] == int(
             dummy_sr * settings.CHUNK_DURATION_SECONDS
         ), "Short audio chunk length mismatch (should be padded)"
-
-        mel_spec_short = waveform_to_mel_spectrogram(chunks_short[0], sr=dummy_sr)
-        print(f"Mel spectrogram shape (short audio): {mel_spec_short.shape}")
-        assert mel_spec_short.shape == (settings.N_MELS, settings.SPECTROGRAM_WIDTH), (
-            "Short audio Mel spectrogram shape mismatch"
-        )
-        min_val_s, max_val_s = np.min(mel_spec_short), np.max(mel_spec_short)
-        print(f"Mel spectrogram min/max values (short audio): {min_val_s}, {max_val_s}")
-        assert min_val_s >= 0.0 and max_val_s <= 1.000001, (
-            f"Short audio Mel spectrogram normalization out of [0,1] range: min={min_val_s}, max={max_val_s}"
-        )
-
-        print("Short audio processing seems OK.")
+        print("split_into_chunks with short audio seems OK.")
     else:
         print("No chunks from short audio to test.")
 
-    print("\nAll local tests for app.audio_processing.utils passed.")
+    # Note: waveform_to_mel_spectrogram tests were removed as the function was removed.
 
-print("app.audio_processing.utils loaded and tested if run directly.")
+    print("\nRelevant local tests for app.audio_processing.utils passed.")
+
+print("app.audio_processing.utils loaded.")

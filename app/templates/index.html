@@ -1,67 +1,23 @@
-body { 
-    font-family: Arial, sans-serif; 
-    margin: 20px; 
-    background-color: #f9f9f9;
-    color: #333;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Audio Detector</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Deepfake Audio Detector</h1>
 
-h1 {
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
-}
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="audioFile">Upload an audio file:</label><br><br>
+        <input type="file" name="file" id="audioFile" accept="audio/*" required>
+        <button type="submit">Detect Deepfake</button>
+    </form>
 
-h2 {
-    color: #34495e;
-    margin-top: 30px;
-}
+    <h2>Results:</h2>
+    <pre id="resultsOutput">Awaiting submission...</pre>
 
-#uploadForm { 
-    margin-bottom: 20px; 
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-#uploadForm label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-#uploadForm input[type="file"] {
-    margin-bottom: 15px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: calc(100% - 100px); /* Adjust width considering button */
-}
-
-#uploadForm button[type="submit"] {
-    background-color: #3498db;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-#uploadForm button[type="submit"]:hover {
-    background-color: #2980b9;
-}
-
-#resultsOutput { 
-    background-color: #ecf0f1; 
-    padding: 15px; 
-    border: 1px solid #bdc3c7;
-    border-radius: 4px;
-    min-height: 150px; 
-    white-space: pre-wrap; 
-    word-wrap: break-word; 
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9em;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-}
+    <script src="/static/script.js"></script>
+</body>
+</html>
