@@ -119,13 +119,17 @@ document.addEventListener("DOMContentLoaded", function () {
 `;
               resultText += `Model Used: ${data.model_used}
 `;
-              resultText += `Prediction: ${data.prediction}
+              resultText += `Prediction: ${data.predicted_class_name}
 `;
               resultText += `Confidence: ${(data.confidence * 100).toFixed(2)}%
 
 `;
+              const rawOutput =
+                data.raw_model_output !== undefined
+                  ? JSON.stringify(data.raw_model_output, null, 2)
+                  : "Raw output not provided";
               resultText += `Raw Output:
-${JSON.stringify(data.raw_model_output, null, 2)}`;
+${rawOutput}`;
               elements.pre.style.color = "var(--text-color)";
             } else {
               let errorDetail = `Server Error: ${status} ${statusText}`;

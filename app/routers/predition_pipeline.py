@@ -5,16 +5,14 @@ import torch
 import numpy as np
 from typing import List, Tuple, Literal, Dict
 
-from fastapi import APIRouter, UploadFile, File, HTTPException, Request, Form
-from starlette.datastructures import State  # For type hinting app.state if needed
+from fastapi import APIRouter, UploadFile, File, HTTPException, Request, Form # For type hinting app.state if needed
 
 from app.audio_processing.audio_segmentation import segment_audio
 from app.audio_processing.spectrogram_processing import (
     create_mel_spectrogram,
     preprocess_spectrogram_to_tensor,
 )
-from app.config import settings
-import torchvision.transforms as transforms  # Required for normalization
+from app.config import settings # Required for normalization
 
 router = APIRouter()
 
