@@ -160,8 +160,3 @@ Contributions are welcome! Please refer to `GUIDE.md` for more detailed informat
 4.  Commit your changes (`git commit -m 'Add some feature'`).
 5.  Push to the branch (`git push origin feature/your-feature-name`).
 6.  Open a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details (if one exists, otherwise specify).
-```
