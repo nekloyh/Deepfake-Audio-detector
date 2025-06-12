@@ -2,7 +2,7 @@
 import librosa
 import numpy as np
 import torch
-import torchvision.transforms as transforms
+from torchvision import transforms
 import torch.nn.functional as F
 import pyloudnorm as pyln
 from typing import Optional
@@ -38,8 +38,7 @@ def create_mel_spectrogram(
         return None
 
     # Kiểm tra năng lượng của waveform
-    energy = np.sum(audio_waveform ** 2)
-    if energy < 1e-6:
+    if np.abs(audio_waveform).max() < 1e-5 or np.sum(audio_waveform ** 2) < 1e-6:
         print("Audio waveform has very low energy, likely silent")
         return None
 
@@ -55,9 +54,9 @@ def create_mel_spectrogram(
         )
         log_mel_spectrogram = librosa.power_to_db(mel_spec, ref=np.max)
         # Kiểm tra độ biến thiên của spectrogram
-        if np.std(log_mel_spectrogram) < 1e-3:
-            print("Spectrogram has low variance, may lack discriminative features")
-            return None
+        # if np.std(log_mel_spectrogram) < 1e-3:
+        #     print("Spectrogram has low variance, may lack discriminative features")
+        #     return None
         return log_mel_spectrogram
     except Exception as e:
         print(f"Error creating Mel-spectrogram: {e}")
@@ -83,17 +82,20 @@ def preprocess_spectrogram_to_tensor(
             align_corners=False,
         )
         mel_spec_scaled = mel_spec_scaled.squeeze(0)  # Shape: [1, 224, 224]
-        # mean_val = mel_spec_scaled.mean()
-        # std_val = mel_spec_scaled.std() + 1e-6  # Avoid division by zero
-        # mel_spec_normalized = (mel_spec_scaled - mean_val) / std_val  # Shape: [1, 224, 224]
-
-        # Apply image normalization for single channel
-        normalize = transforms.Normalize(
-            mean=[mean], std=[std + 1e-6] 
-        )  # Single-channel normalization
-        image_tensor = normalize(mel_spec_scaled)  # Shape: [1, 224, 224]
         
-        return image_tensor
+        # Chuẩn hóa cục bộ 
+        mean_val = mel_spec_scaled.mean()
+        std_val = mel_spec_scaled.std() + 1e-6
+        mel_spec_normalized = (mel_spec_scaled - mean_val) / std_val
+        
+        # Điều chỉnh nhẹ dựa trên PIXEL_MEAN và PIXEL_STD
+        # Nhân với hệ số nhỏ để tránh lệch quá xa
+        # Lệch FAKE tăng factor
+        # Lệch REAL giảm factor
+        std_normalized_factor = 0.19
+        mean_normalized_factor = 45.0
+        mel_spec_normalized = mel_spec_normalized * (std * std_normalized_factor) + (mean * mean_normalized_factor)
+        return mel_spec_normalized
     except Exception as e:
         print(f"Error preprocessing spectrogram to tensor: {e}")
         return None

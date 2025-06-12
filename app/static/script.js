@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const dropArea = document.getElementById("drop-area"); // New
   const fileNameDisplay = document.getElementById("file-name-display"); // New
 
-  const modelNames = ["cnn_small", "cnn_large", "vit_small", "vit_large"];
+  const modelNames = ["CNN_Small", "CNN_Large", "ViT_Small", "ViT_Large"];
 
   // Function to update the file name display
   function updateFileNameDisplay(file) {
@@ -43,8 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const files = event.dataTransfer.files;
       if (files.length > 0) {
         audioFile.files = files; // Assign dropped files to the input
-        updateFileNameDisplay(files[0]); // Update display
-        // Trigger change event manually if needed for other listeners
+        // Trigger change event. The audioFile's own change listener will handle UI updates.
         const changeEvent = new Event("change");
         audioFile.dispatchEvent(changeEvent);
       }
@@ -194,8 +193,8 @@ document.addEventListener("DOMContentLoaded", function () {
               cardContent += `<p><strong>Confidence:</strong> ${confidence}</p>`;
 
               const rawOutput =
-                data.raw_model_output !== undefined
-                  ? JSON.stringify(data.raw_model_output, null, 2)
+                data.raw_output !== undefined
+                  ? JSON.stringify(data.raw_output, null, 2)
                   : "N/A";
               cardContent += `<p><strong>Raw Output:</strong></p><pre>${rawOutput}</pre>`;
 

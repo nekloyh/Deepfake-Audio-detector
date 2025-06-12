@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Literal
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 import os
@@ -46,14 +46,19 @@ class Settings(BaseSettings):
     # New parameters
     SEGMENT_OVERLAP_SECONDS: float = 1.5
     IMAGE_SIZE: int = 224
-    PIXEL_MEAN: float = -0.0137
+    PIXEL_MEAN: float =  -0.0137
     PIXEL_STD: float = 0.7317
 
     # Labels
     LABELS: dict = {0: "real", 1: "fake"}
     REAL_LABEL_INDEX: int = 0
     FAKE_LABEL_INDEX: int = 1
-
+    REAL_BIAS_FACTOR: float = 1.1 # Hệ số nhân cho xác suất REAL (>1.0 = thiên vị REAL, <1.0 = thiên vị FAKE)
+    BIAS_METHOD: str = "real_bias" # "equal_weight", "real_bias", "inverse_freq", "custom"
+    # Aggregate methods
+    # "mean_logits", "mean_probs", "majority_vote", "weighted_majority_vote", "logit_argmax_vote"
+    AGGREGATION_METHOD: str = "mean_probs"
+    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
