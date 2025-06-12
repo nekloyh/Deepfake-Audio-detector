@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 # Import the router
-from .routers import predition_pipeline as prediction_router
+from .routers import prediction_pipeline as prediction_router
 from .model_definitions import CNN_Audio, ViT_Audio
 from .config import settings
 

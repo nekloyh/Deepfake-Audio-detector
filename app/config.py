@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     N_FFT: int = 2048  # FFT window size for STFT.
     HOP_LENGTH: int = 512  # Hop length for STFT (number of samples between frames).
     MIN_DB_LEVEL: float = -80.0  # Minimum decibel level; used as the floor for dB spectrograms before normalization.
+    LOUDNESS_LUFS: float = -23.0  # Target loudness (LUFS)
     # Spectrogram values below this are clipped to this level.
     TOP_DB: float = 80.0  # Used with librosa.power_to_db (ref=np.max, top_db=TOP_DB). Values quieter than
     # (max_signal_power - TOP_DB) are floored. Effectively defines the dynamic range.

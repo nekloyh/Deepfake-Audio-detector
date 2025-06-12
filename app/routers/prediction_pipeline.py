@@ -41,6 +41,7 @@ def predict_single_segment(
         n_mels=settings.N_MELS,
         n_fft=settings.N_FFT,
         hop_length=settings.HOP_LENGTH,
+        target_lufs=settings.LOUDNESS_LUFS
     )
     if log_mel_spectrogram is None:
         print("Spectrogram creation failed for a segment.")
@@ -57,11 +58,12 @@ def predict_single_segment(
         if isinstance(settings.PIXEL_STD, float)
         else settings.PIXEL_STD
     )
+
     input_tensor = preprocess_spectrogram_to_tensor(
         log_mel_spectrogram,
         image_size=settings.IMAGE_SIZE,
         mean=mean,
-        std=std,
+        std=std
     )
     if input_tensor is None:
         print("Spectrogram preprocessing failed for a segment.")
@@ -276,7 +278,9 @@ async def predict_endpoint(
             raw_output = []
         print(f"Raw output prepared with {len(raw_output)} entries.")
 
-        if not probabilities_list or any(p < 0 or p > 1 for p in probabilities_list):
+        if (not probabilities_list 
+        or any(np.isnan(p) or np.isinf(p) or p < 0 or p > 1 for p in probabilities_list)
+        or not np.isclose(sum(probabilities_list), 1.0, atol=1e-5)):
             print(f"Invalid probabilities: {probabilities_list}")
             probabilities_list = [0.0] * len(settings.LABELS)
             class_idx = -1

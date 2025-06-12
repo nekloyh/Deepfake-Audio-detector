@@ -4,6 +4,7 @@ import numpy as np
 import torch
 import torchvision.transforms as transforms
 import torch.nn.functional as F
+import pyloudnorm as pyln
 from typing import Optional
 from app.config import settings
 
@@ -16,6 +17,7 @@ except ImportError:
         N_FFT = 2048
         HOP_LENGTH = 512
         IMAGE_SIZE = 224
+        LOUDNESS_LUFS = -23.0
         PIXEL_MEAN = -0.0137
         PIXEL_STD = 0.7317
     settings = Settings()
@@ -26,7 +28,11 @@ def create_mel_spectrogram(
     n_mels: int = settings.N_MELS,
     n_fft: int = settings.N_FFT,
     hop_length: int = settings.HOP_LENGTH,
+    target_lufs: float = settings.LOUDNESS_LUFS
 ) -> Optional[np.ndarray]:
+    meter = pyln.Meter(sr)
+    loudness = meter.integrated_loudness(audio_waveform)
+    audio_waveform = pyln.normalize.loudness(audio_waveform, loudness, target_lufs)
     if audio_waveform is None or len(audio_waveform) == 0:
         print("Invalid audio waveform: empty or None")
         return None
@@ -64,42 +70,29 @@ def preprocess_spectrogram_to_tensor(
     mean: float = settings.PIXEL_MEAN,  # Type will be float from settings
     std: float = settings.PIXEL_STD,  # Type will be float from settings
 ) -> Optional[torch.Tensor]:
-    """
-        Normalizes the spectrogram, resizes it, and transforms it to a single-channel PyTorch tensor.
-        
-        Args:
-            log_mel_spectrogram (np.ndarray): Log Mel spectrogram.
-            image_size (int): Target square image size (e.g., 224 for 224x224).
-            mean (float): Mean value for normalization (single channel).
-            std (float): Standard deviation value for normalization (single channel).
-        
-        Returns:
-            torch.Tensor: Preprocessed spectrogram as a single-channel PyTorch tensor ([1, H, W]).
-                        Returns None if input spectrogram is invalid.
-        """
     if log_mel_spectrogram is None or log_mel_spectrogram.size == 0:
         return None
-
     try:
-        # Convert to tensor and resize
-        mel_spec_tensor = torch.from_numpy(log_mel_spectrogram).float().unsqueeze(0).unsqueeze(0)  # Shape: [1, 1, n_mels, frames]
+        mel_spec_tensor = (
+            torch.from_numpy(log_mel_spectrogram).float().unsqueeze(0).unsqueeze(0)
+        )
         mel_spec_scaled = F.interpolate(
             mel_spec_tensor,
             size=(image_size, image_size),
             mode="bilinear",
-            align_corners=False
-        )  # Shape: [1, 1, 224, 224]
-
-        # Per-sample normalization
+            align_corners=False,
+        )
         mel_spec_scaled = mel_spec_scaled.squeeze(0)  # Shape: [1, 224, 224]
-        mean_val = mel_spec_scaled.mean()
-        std_val = mel_spec_scaled.std() + 1e-6  # Avoid division by zero
-        mel_spec_normalized = (mel_spec_scaled - mean_val) / std_val  # Shape: [1, 224, 224]
+        # mean_val = mel_spec_scaled.mean()
+        # std_val = mel_spec_scaled.std() + 1e-6  # Avoid division by zero
+        # mel_spec_normalized = (mel_spec_scaled - mean_val) / std_val  # Shape: [1, 224, 224]
 
         # Apply image normalization for single channel
-        normalize = transforms.Normalize(mean=[mean], std=[std])  # Single-channel normalization
-        image_tensor = normalize(mel_spec_normalized)  # Shape: [1, 224, 224]
-
+        normalize = transforms.Normalize(
+            mean=[mean], std=[std + 1e-6] 
+        )  # Single-channel normalization
+        image_tensor = normalize(mel_spec_scaled)  # Shape: [1, 224, 224]
+        
         return image_tensor
     except Exception as e:
         print(f"Error preprocessing spectrogram to tensor: {e}")
