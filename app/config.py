@@ -1,7 +1,5 @@
-from typing import List, Literal
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
-import os
 
 # Explicitly load .env file at the beginning.
 # find_dotenv will search for .env in current directory or parent directories.

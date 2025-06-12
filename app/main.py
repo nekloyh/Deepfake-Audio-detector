@@ -1,6 +1,5 @@
 import os
-import torch
-import numpy as np  # Keep this, it might be needed for torch.serialization.add_safe_globals
+import torch  # Keep this, it might be needed for torch.serialization.add_safe_globals
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates

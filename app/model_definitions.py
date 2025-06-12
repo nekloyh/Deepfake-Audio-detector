@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 from einops.layers.torch import Rearrange
-from dataclasses import field  # dataclass is no longer used
-
 
 # Define CNN_Audio class (copied from models/convert_cnn_small_to_onnx.py)
 class CNN_Audio(nn.Module):
