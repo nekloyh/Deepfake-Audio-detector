@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const uploadForm = document.getElementById("uploadForm");
-  const audioFile = document.getElementById("audioFile"); // Keep this for actual file handling
+  const audioFile = document.getElementById("audioFile");
   const resultsContainer = document.getElementById("resultsContainer");
   const mainPlaceholder = resultsContainer
     ? resultsContainer.querySelector(".placeholder")
@@ -9,10 +9,30 @@ document.addEventListener("DOMContentLoaded", function () {
     ? uploadForm.querySelector(".submit-button")
     : null;
   const loaderContainer = document.getElementById("loaderContainer");
-  const dropArea = document.getElementById("drop-area"); // New
-  const fileNameDisplay = document.getElementById("file-name-display"); // New
+  const dropArea = document.getElementById("drop-area"); // Still use this as the clickable area
+  const fileNameDisplay = document.getElementById("file-name-display");
+
+  // Define your API base URL. IMPORTANT: Change this if your backend is on a different origin.
+  const API_BASE_URL = ""; // e.g., "http://localhost:8000" if your backend is there
 
   const modelNames = ["CNN_Small", "CNN_Large", "ViT_Small", "ViT_Large"];
+  const SUPPORTED_FILE_TYPES = [
+    "audio/mpeg",
+    "audio/wav",
+    "audio/x-wav",
+    "audio/mp3",
+  ]; // Add more as needed
+
+  // Helper function to show/hide the placeholder
+  function togglePlaceholder(show, message = "", isError = false) {
+    if (mainPlaceholder) {
+      mainPlaceholder.textContent = message;
+      mainPlaceholder.style.color = isError
+        ? "var(--error-color, #dc3545)"
+        : "var(--text-color, #333)";
+      mainPlaceholder.style.display = show ? "block" : "none";
+    }
+  }
 
   // Function to update the file name display
   function updateFileNameDisplay(file) {
@@ -25,32 +45,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Setup Drag and Drop
+  // --- REMOVED DRAG AND DROP LISTENERS ---
+
+  // Make the dropArea clickable to open the file dialog
+  // This is the core part for "click to select"
   if (dropArea && audioFile) {
-    // Ensure audioFile input exists for assignment
-    dropArea.addEventListener("dragover", (event) => {
-      event.preventDefault(); // Necessary to allow drop
-      dropArea.classList.add("dragover");
-    });
-
-    dropArea.addEventListener("dragleave", () => {
-      dropArea.classList.remove("dragover");
-    });
-
-    dropArea.addEventListener("drop", (event) => {
+    dropArea.addEventListener("click", (event) => {
+      // Prevent any default behavior of the div itself
       event.preventDefault();
-      dropArea.classList.remove("dragover");
-      const files = event.dataTransfer.files;
-      if (files.length > 0) {
-        audioFile.files = files; // Assign dropped files to the input
-        // Trigger change event. The audioFile's own change listener will handle UI updates.
-        const changeEvent = new Event("change");
-        audioFile.dispatchEvent(changeEvent);
-      }
-    });
-
-    // Make the dropArea clickable to open the file dialog
-    dropArea.addEventListener("click", () => {
+      // Stop the event from bubbling up to parents
+      event.stopPropagation();
+      // Programmatically click the hidden file input
       audioFile.click();
     });
   }
@@ -59,9 +64,22 @@ document.addEventListener("DOMContentLoaded", function () {
   if (audioFile) {
     audioFile.addEventListener("change", () => {
       if (audioFile.files.length > 0) {
-        updateFileNameDisplay(audioFile.files[0]);
+        const selectedFile = audioFile.files[0];
+        if (!SUPPORTED_FILE_TYPES.includes(selectedFile.type)) {
+          togglePlaceholder(
+            true,
+            "Unsupported file type. Please upload an audio file (e.g., MP3, WAV).",
+            true
+          );
+          updateFileNameDisplay(null);
+          audioFile.value = ""; // Clear the file input to allow re-selection
+          return;
+        }
+        updateFileNameDisplay(selectedFile);
+        togglePlaceholder(false); // Hide placeholder if a valid file is selected
       } else {
         updateFileNameDisplay(null);
+        togglePlaceholder(false); // Hide placeholder if no file is selected
       }
     });
   }
@@ -71,78 +89,80 @@ document.addEventListener("DOMContentLoaded", function () {
     uploadForm &&
     submitButton &&
     resultsContainer &&
-    mainPlaceholder && // Optional, but good to check
     loaderContainer &&
-    dropArea &&
-    fileNameDisplay // Ensure all key elements are present
+    dropArea && // dropArea still checked as it's the click target
+    fileNameDisplay
   ) {
     uploadForm.addEventListener("submit", async function (event) {
       event.preventDefault();
 
       if (!audioFile.files || audioFile.files.length === 0) {
-        resultsContainer.innerHTML = ""; // Clear previous results
-        mainPlaceholder.textContent = "Please select an audio file.";
-        mainPlaceholder.style.color = "var(--error-color, #dc3545)";
-        mainPlaceholder.style.display = "block";
-        resultsContainer.appendChild(mainPlaceholder);
-        updateFileNameDisplay(null); // Clear file name display
+        resultsContainer.innerHTML = "";
+        togglePlaceholder(true, "Please select an audio file.", true);
+        updateFileNameDisplay(null);
+        return;
+      }
+
+      const currentFile = audioFile.files[0];
+
+      if (!SUPPORTED_FILE_TYPES.includes(currentFile.type)) {
+        resultsContainer.innerHTML = "";
+        togglePlaceholder(
+          true,
+          "Unsupported file type. Please upload an audio file (e.g., MP3, WAV).",
+          true
+        );
+        updateFileNameDisplay(null);
+        audioFile.value = ""; // Clear the file input to allow re-selection
         return;
       }
 
       // Clear previous results and hide placeholder for loading
       resultsContainer.innerHTML = "";
-      if (mainPlaceholder) {
-        mainPlaceholder.style.display = "none"; // Hide placeholder
-      }
+      togglePlaceholder(false); // Hide placeholder during processing
 
-      if (loaderContainer) loaderContainer.style.display = "block";
+      loaderContainer.style.display = "block";
       submitButton.disabled = true;
       submitButton.textContent = "Processing...";
-      const currentFile = audioFile.files[0]; // Store for use in results cards
 
       const promises = modelNames.map((modelName) => {
         const formData = new FormData();
         formData.append("file", currentFile);
         formData.append("model_name", modelName);
-        // Assuming API_BASE_URL is defined globally or adjust as needed
-        const predictUrl = `/predict/`;
+        const predictUrl = `${API_BASE_URL}/predict/`;
 
         return fetch(predictUrl, {
           method: "POST",
           body: formData,
           headers: {
-            Accept: "application/json", // Optional: Explicitly ask for JSON
+            Accept: "application/json",
           },
         })
-          .then((response) =>
-            response
-              .json()
-              .then((data) => ({
-                modelName,
-                data,
-                responseOk: response.ok,
-                status: response.status,
-                statusText: response.statusText,
-              }))
-              // More robust error handling for non-JSON or empty error responses
-              .catch(async () => {
-                let errorText = "Failed to parse JSON response.";
-                try {
-                  errorText = await response.text();
-                  if (!errorText)
-                    errorText = `Server returned status ${response.status} with no message.`;
-                } catch (e) {
-                  /* ignore text parsing error */
-                }
-                return {
-                  modelName,
-                  data: { detail: errorText },
-                  responseOk: false,
-                  status: response.status,
-                  statusText: response.statusText,
-                };
-              })
-          )
+          .then(async (response) => {
+            let data;
+            try {
+              data = await response.json();
+            } catch (jsonError) {
+              let rawText = "";
+              try {
+                rawText = await response.text();
+              } catch (textError) {
+                /* ignore */
+              }
+              data = {
+                detail: `Failed to parse JSON response. Server said: ${
+                  rawText || "No response body."
+                }`,
+              };
+            }
+            return {
+              modelName,
+              data,
+              responseOk: response.ok,
+              status: response.status,
+              statusText: response.statusText,
+            };
+          })
           .catch((error) => ({
             modelName,
             data: { detail: `Network Error: ${error.message}` },
@@ -156,13 +176,9 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const results = await Promise.allSettled(promises);
 
-        resultsContainer.innerHTML = ""; // Clear again just in case, and to remove placeholder if it wasn't hidden
+        resultsContainer.innerHTML = ""; // Clear again to ensure clean slate
 
-        if (results.length === 0 && mainPlaceholder) {
-          mainPlaceholder.textContent = "No results to display.";
-          mainPlaceholder.style.display = "block";
-          resultsContainer.appendChild(mainPlaceholder);
-        }
+        let allFailed = true; // Track if all models failed
 
         results.forEach((result) => {
           const card = document.createElement("div");
@@ -171,24 +187,23 @@ document.addEventListener("DOMContentLoaded", function () {
           if (result.status === "fulfilled") {
             const { modelName, data, responseOk, status, statusText } =
               result.value;
-            // Use model_name from data if available (e.g. if server returns it), else fallback to mapped modelName
             const displayModelName =
-              data.model_used || data.model_name || modelName;
+              data.model_used || data.model_name || modelName; // Prioritize server's model name
 
             let cardContent = `<h4>${displayModelName}</h4>`;
 
-            if (responseOk && data) {
-              // Ensure data is present
+            if (responseOk && data && data.predicted_class_name !== undefined) {
+              allFailed = false; // At least one model returned a valid prediction
               cardContent += `<p><strong>File:</strong> ${
                 data.filename || currentFile.name
               }</p>`;
               cardContent += `<p><strong>Prediction:</strong> <span class="prediction-text">${
                 data.predicted_class_name || "N/A"
               }</span></p>`;
-              // Check if confidence is a valid number before toFixed
+
               const confidence =
                 typeof data.confidence === "number"
-                  ? data.confidence.toFixed(2) + "%"
+                  ? `${(data.confidence * 100).toFixed(2)}%` // Format as percentage
                   : "N/A";
               cardContent += `<p><strong>Confidence:</strong> ${confidence}</p>`;
 
@@ -198,40 +213,43 @@ document.addEventListener("DOMContentLoaded", function () {
                   : "N/A";
               cardContent += `<p><strong>Raw Output:</strong></p><pre>${rawOutput}</pre>`;
 
-              if (data.predicted_class_name) {
-                if (data.predicted_class_name.toLowerCase().includes("real")) {
-                  card.classList.add("status-real");
-                } else if (
-                  data.predicted_class_name.toLowerCase().includes("fake")
-                ) {
-                  card.classList.add("status-fake");
-                } else {
-                  // Neutral or undefined status
-                }
+              if (data.predicted_class_name.toLowerCase().includes("real")) {
+                card.classList.add("status-real");
+              } else if (
+                data.predicted_class_name.toLowerCase().includes("fake")
+              ) {
+                card.classList.add("status-fake");
               } else {
-                card.classList.add("status-fake"); // Treat as error/fake if no prediction
+                card.classList.add("status-neutral"); // For predictions that are neither real nor fake
               }
             } else {
-              // Handle non-ok responses or missing data
-              card.classList.add("status-fake"); // Or a specific "status-error"
-              let errorDetail = `Error processing with ${displayModelName}: ${
+              // Handle non-ok responses or missing/invalid prediction data
+              card.classList.add("status-error"); // A new class for general errors
+              let errorDetail = `Error with ${displayModelName} (${
                 status || "Unknown"
-              } ${statusText || "Error"}`;
+              } ${statusText || "Error"})`;
               if (data && data.detail) {
                 errorDetail += `<br>Details: ${
                   typeof data.detail === "string"
                     ? data.detail
                     : JSON.stringify(data.detail, null, 2)
                 }`;
-              } else if (!data) {
+              } else if (data) {
+                errorDetail += `<br>Details: Server returned data, but no predicted class name.`;
+                errorDetail += `<br><pre>${JSON.stringify(
+                  data,
+                  null,
+                  2
+                )}</pre>`;
+              } else {
                 errorDetail += `<br>Details: No data returned from server.`;
               }
-              cardContent += `<p>${errorDetail}</p>`;
+              cardContent += `<p class="error-message">${errorDetail}</p>`;
             }
             card.innerHTML = cardContent;
           } else {
-            // Promise rejected (network error, etc.)
-            card.classList.add("status-fake"); // Or "status-error"
+            // Promise rejected (e.g., network error, `fetch` itself failed)
+            card.classList.add("status-error");
             const reason = result.reason || {};
             const modelNameForError = reason.modelName || "Unknown Model";
             let errorMessage = `Failed to get result for ${modelNameForError}.`;
@@ -240,31 +258,28 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (reason.message) {
               errorMessage += `<br>Details: ${reason.message}`;
             }
-
-            card.innerHTML = `<h4>Error with ${modelNameForError}</h4><p>${errorMessage}</p>`;
+            card.innerHTML = `<h4>Error with ${modelNameForError}</h4><p class="error-message">${errorMessage}</p>`;
           }
           resultsContainer.appendChild(card);
         });
 
-        if (resultsContainer.children.length === 0 && mainPlaceholder) {
-          mainPlaceholder.textContent =
-            "No results were generated, or an error occurred preventing display.";
-          mainPlaceholder.style.display = "block";
-          resultsContainer.appendChild(mainPlaceholder);
+        if (allFailed) {
+          togglePlaceholder(
+            true,
+            "No models returned successful predictions. Please check server logs or try again.",
+            true
+          );
         }
       } catch (error) {
-        // Catch errors from Promise.allSettled or other unexpected issues
         console.error("Error processing model predictions:", error);
-        resultsContainer.innerHTML = ""; // Clear any partial results
-        if (mainPlaceholder) {
-          mainPlaceholder.textContent =
-            "An unexpected error occurred. Please check the console.";
-          mainPlaceholder.style.color = "var(--error-color, #dc3545)";
-          mainPlaceholder.style.display = "block";
-          resultsContainer.appendChild(mainPlaceholder);
-        }
+        resultsContainer.innerHTML = "";
+        togglePlaceholder(
+          true,
+          "An unexpected client-side error occurred. Please check the browser console for details.",
+          true
+        );
       } finally {
-        if (loaderContainer) loaderContainer.style.display = "none";
+        loaderContainer.style.display = "none";
         submitButton.disabled = false;
         submitButton.textContent = "Detect Deepfake";
       }
@@ -274,16 +289,14 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error(
       "Essential page elements not found for script.js. Script functionality will be impaired."
     );
-    if (resultsContainer && mainPlaceholder) {
-      // Attempt to show an error on the page
-      resultsContainer.innerHTML = ""; // Clear
-      mainPlaceholder.textContent =
-        "Error: Critical page elements are missing. The application cannot function correctly.";
-      mainPlaceholder.style.color = "var(--error-color, #dc3545)";
-      mainPlaceholder.style.display = "block";
-      resultsContainer.appendChild(mainPlaceholder);
+    if (resultsContainer) {
+      resultsContainer.innerHTML = "";
+      togglePlaceholder(
+        true,
+        "Error: Critical page elements are missing. The application cannot function correctly. Please ensure your HTML has the required IDs.",
+        true
+      );
     } else if (document.body) {
-      // Fallback if even resultsContainer is missing
       document.body.innerHTML =
         '<p style="color:red; text-align:center; font-size:1.2em; padding:20px;">Error: Critical page elements are missing. Application cannot load.</p>';
     }

@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-This project provides a system for detecting deepfake audio. It can operate as a web service (API) or a command-line interface (CLI) tool. The system uses PyTorch models (CNN and Vision Transformer architectures) to classify audio segments as either "real" or "fake".
+This project is a Deepfake Audio Detection system that can identify whether an audio recording is real or synthetically generated. It utilizes advanced machine learning models (CNN and ViT architectures) to perform audio classification. The application can be run as a web service with a user-friendly interface or as a command-line tool.
 
 ## 2. Project Structure
 
@@ -12,104 +12,98 @@ Here's an outline of the key directories and files within the project:
 .
 ├── app/                        # Main application source code
 │   ├── __init__.py
-│   ├── audio_processing/       # Audio splitting and manipulation utilities
+│   ├── audio_processing/       # Audio segmentation and spectrogram utilities
 │   │   ├── __init__.py
-│   │   └── utils.py
-│   ├── config.py               # Application configuration (Pydantic settings)
-│   ├── main.py                 # FastAPI application entry point, model loading
-│   ├── model_definitions.py    # PyTorch model class definitions (CNN_Audio, ViT_Audio)
-│   ├── models/                 # Directory for storing .pth model files
+│   │   ├── audio_segmentation.py
+│   │   └── spectrogram_processing.py
+│   ├── config.py               # Application configuration
+│   ├── main.py                 # FastAPI application entry point
+│   ├── model_definitions.py    # PyTorch model class definitions
+│   ├── models/                 # Pre-trained model files (.pth)
 │   │   ├── best_model_CNN_Large_...pth
 │   │   └── ... (other .pth files)
-│   ├── routers/                # FastAPI routers
+│   ├── routers/                # FastAPI prediction endpoints
 │   │   ├── __init__.py
-│   │   └── predict.py          # Prediction endpoint logic
-│   ├── static/                 # Static files for web interface (CSS, JS)
-│   ├── templates/              # HTML templates for web interface
-│   └── tests/                  # Unit and integration tests
-│       ├── __init__.py
-│       └── test_audio_preprocessing.py
+│   │   └── prediction_pipeline.py # Prediction endpoint logic
+│   ├── static/                 # CSS and JavaScript for the web interface
+│   ├── templates/              # HTML templates
+│   └── tests/                  # Unit and integration tests (currently empty)
+│       └── __init__.py
 ├── cli.py                      # Command-Line Interface script
 ├── Dockerfile                  # For building a Docker container
-├── GUIDE.md                    # This guide
-├── requirements.txt            # Pip dependencies
-├── environment.yml             # Conda environment (extensive, see notes in Installation)
-├── .env                        # Example environment file (create your own from this)
-└── ... (other project files)
+├── GUIDE.md                    # Detailed user guide
+├── workflow.md                 # Description of the application workflow
+├── requirements.txt            # Python dependencies for pip
+├── environment.yml             # Conda environment definition (alternative)
+├── .env                        # Example environment file (create your own from this or use .env.example)
+└── README.md                   # Project overview (this file should be similar to README.md)
 ```
 
 ## 3. Installation
 
 Follow these steps to set up the project environment:
 
-### 3.1. Clone the Repository
+### 3.1. Prerequisites
 
-```bash
-git clone <repository_url>
-cd <repository_directory>
-```
+-   Python 3.8+
+-   Git
 
-### 3.2. Set Up a Python Virtual Environment (Recommended)
+### 3.2. Installation Steps
 
-Using a virtual environment helps manage dependencies and avoid conflicts.
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository_url>
+    cd <repository_directory>
+    ```
 
-**Using `venv` (standard Python):**
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+2.  **Set up a Python virtual environment (recommended):**
+    *   Using `venv`:
+        ```bash
+        python -m venv venv
+        source venv/bin/activate  # On Windows: venv\Scripts\activate
+        ```
+    *   Or using Conda:
+        ```bash
+        conda create -n deepfake_audio_env python=3.9 # Or your preferred Python version
+        conda activate deepfake_audio_env
+        ```
 
-**Using Conda:**
-```bash
-conda create -n deepfake_audio_env python=3.9 # Or your preferred Python version
-conda activate deepfake_audio_env
-```
-
-### 3.3. Install Dependencies
-
-**Primary method (using pip and `requirements.txt`):**
-This is the recommended method and aligns with the `Dockerfile`.
-```bash
-pip install -r requirements.txt
-```
-
-**Alternative (using Conda and `environment.yml`):**
-The provided `environment.yml` is very extensive and may contain packages beyond the immediate needs of this application. It also appears to have encoding issues (UTF-16 with BOM and null characters) and might require cleanup before use.
-If you choose to use it:
-```bash
-# Ensure environment.yml is cleaned up (UTF-8, no BOM, no null chars between letters)
-# conda env create -f environment.yml
-```
-It's generally recommended to create a minimal Conda environment and install `requirements.txt` into it if you prefer Conda.
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    (Note: The `environment.yml` is an alternative for Conda users but `requirements.txt` is the primary source of dependencies).
 
 ## 4. Configuration
 
-Application behavior is configured through `app/config.py`, which loads settings from environment variables and a `.env` file.
+Application behavior is configured through `app/config.py` (Pydantic settings), which loads settings from environment variables. A `.env` file is used to manage these variables locally.
 
 ### 4.1. `.env` File
 
-1.  Create a `.env` file in the project root directory (you can copy/rename an example if one is provided, or create it from scratch).
-2.  Define your environment-specific settings in this file. Key variables include:
+1.  Create a `.env` file in the project root. You can copy `.env.example` (if it exists) or create one from scratch.
+2.  Define necessary variables. Key variables include:
 
-    *   `MODEL_DIR`: Path to the directory containing your `.pth` model files (default: `app/models/`).
-    *   `CNN_SMALL_MODEL_NAME`, `CNN_LARGE_MODEL_NAME`, `VIT_SMALL_MODEL_NAME`, `VIT_LARGE_MODEL_NAME`: Filenames of your specific model files within `MODEL_DIR`.
-    *   `HOST`: Host address for the FastAPI service (default: `0.0.0.0`).
-    *   `PORT`: Port for the FastAPI service (default: `8000`).
-    *   `DEBUG`: Set to `True` for FastAPI debug mode and auto-reload (default: `False`).
+    *   `MODEL_DIR`: Path to the directory containing model files (e.g., `app/models/`).
+    *   `CNN_SMALL_MODEL_NAME`, `CNN_LARGE_MODEL_NAME`, `VIT_SMALL_MODEL_NAME`, `VIT_LARGE_MODEL_NAME`: Specific filenames of your models.
+    *   `HOST`: Host for the FastAPI service (e.g., `0.0.0.0`).
+    *   `PORT`: Port for the FastAPI service (e.g., `8000`).
+    *   `DEBUG`: FastAPI debug mode (`True` or `False`).
 
-    Example `.env` content:
+    Example `.env`:
     ```env
     MODEL_DIR="app/models/"
     CNN_SMALL_MODEL_NAME="best_model_CNN_Small_cnn_3s_dataset_102208.pth"
-    # ... other model names ...
+    CNN_LARGE_MODEL_NAME="best_model_CNN_Large_cnn_3s_dataset_114040.pth"
+    VIT_SMALL_MODEL_NAME="best_model_ViT_Small_vit_3s_dataset_040441.pth"
+    VIT_LARGE_MODEL_NAME="best_model_ViT_Large_vit_3s_dataset_044740.pth"
     HOST="0.0.0.0"
     PORT="8000"
     DEBUG="False"
     ```
 
-### 4.2. Audio Processing Parameters
+### 4.2. Application Configuration (`app/config.py`)
 
-Parameters like `TARGET_SAMPLE_RATE`, `CHUNK_DURATION_SECONDS`, `N_MELS`, `SPECTROGRAM_WIDTH`, etc., are defined in `app/config.py` and are not typically changed via `.env` unless `app/config.py` is modified to load them from environment variables.
+The `app/config.py` file defines Pydantic models for settings. These settings are loaded from environment variables (and thus your `.env` file). This includes model paths, audio processing parameters (`TARGET_SAMPLE_RATE`, `CHUNK_DURATION_SECONDS`, etc.), and server settings.
 
 ## 5. Running the Application
 
@@ -117,107 +111,102 @@ You can run this application either as a web service or as a command-line tool.
 
 ### 5.1. As a Web Service (FastAPI)
 
-The web service provides an API endpoint for audio predictions.
+The web application provides a user interface to upload an audio file and see the prediction results from all four models.
 
-**Command to start the server:**
+**Start the FastAPI server:**
 ```bash
-uvicorn app.main:app --host <your_host_ip_or_0.0.0.0> --port <your_port> --reload
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-*   Replace `<your_host_ip_or_0.0.0.0>` with the IP address to bind to (e.g., `0.0.0.0` to be accessible from other machines, or `127.0.0.1` for local access only).
-*   Replace `<your_port>` with the desired port (e.g., `8000`).
-*   `--reload` enables auto-reloading when code changes (useful for development). This can be omitted for production.
+(Adjust host and port as needed, or rely on `.env` settings. `--reload` is for development.)
 
-The values for host and port will default to those in your `.env` file or `app/config.py` if not specified in the command.
+Access the application by navigating to `http://localhost:8000` (or your configured host/port) in your web browser.
 
-**Accessing the API:**
-*   **Interactive API Docs (Swagger UI):** Open your browser and go to `http://<your_host_ip>:<your_port>/docs`
-*   **Prediction Endpoint:** `POST /predict_audio`
-    *   **Request:** `multipart/form-data` with:
-        *   `audio_file`: The audio file to analyze.
-        *   `model_name` (query parameter, optional): The key of the model to use (e.g., `cnn_small`, `cnn_large`, `vit_small`, `vit_large`). Defaults to `cnn_small`.
-    *   **Example using `curl`:**
-        ```bash
-        curl -X POST -F "audio_file=@/path/to/your/audio.wav" "http://127.0.0.1:8000/predict_audio?model_name=cnn_small"
-        ```
-    *   **Example using Python `requests`:**
-        ```python
-        import requests
-
-        files = {'audio_file': open('/path/to/your/audio.wav', 'rb')}
-        params = {'model_name': 'cnn_small'}
-        response = requests.post("http://127.0.0.1:8000/predict_audio", files=files, params=params)
-
-        if response.status_code == 200:
-            print(response.json())
-        else:
-            print(f"Error: {response.status_code}", response.text)
-        ```
+-   **API Documentation:** Interactive API docs (Swagger UI) are available at `http://localhost:8000/docs`.
+-   **Prediction Endpoint:** `POST /predict_audio` (defined in `app/routers/prediction_pipeline.py`).
+    *   Accepts `audio_file` (multipart/form-data) and an optional `model_name` query parameter.
+    *   The web UI uses this endpoint to get predictions from all models.
 
 ### 5.2. As a Command-Line Interface (CLI)
 
-The CLI tool allows you to make predictions directly from your terminal.
+The CLI allows for quick predictions directly from the terminal.
 
-**Command Syntax:**
+**Syntax:**
 ```bash
 python cli.py <audio_file_path> [--model_name <model_key>]
 ```
+-   `<audio_file_path>`: Path to the audio file.
+-   `[--model_name <model_key>]`: Optional. Specify model (`cnn_small`, `cnn_large`, `vit_small`, `vit_large`). Defaults to `cnn_small`.
 
-*   **`audio_file_path` (required):** Path to the audio file you want to analyze.
-*   **`--model_name <model_key>` (optional):** Specifies which model to use.
-    *   Choices: `cnn_small`, `cnn_large`, `vit_small`, `vit_large`.
-    *   Defaults to `cnn_small` (or the filename part of `settings.CNN_SMALL_MODEL_NAME`).
-    *   Model names are case-insensitive.
-
-**Example Usage:**
+**Example:**
 ```bash
-python cli.py "path/to/sample_audio.wav"
-python cli.py "another_audio.flac" --model_name vit_large
+python cli.py "path/to/your/audio.wav" --model_name vit_large
 ```
 
-The CLI will output predictions for each chunk of the audio file.
+## 6. Workflow Overview
 
-## 6. Testing
+The application processes audio as follows:
+1.  **Upload:** User uploads an audio file via the web UI or provides a path via CLI.
+2.  **Requests (Web UI):** The frontend sends separate prediction requests to the backend for each of the four models using the `/predict_audio` endpoint.
+3.  **Processing (Backend - `app.routers.prediction_pipeline.predict_audio_pipeline`):**
+    *   The audio is received and converted to mono.
+    *   It's segmented into 3-second chunks (using `app.audio_processing.audio_segmentation`).
+    *   Each chunk is transformed into a Mel spectrogram, normalized, and resized (using `app.audio_processing.spectrogram_processing`).
+4.  **Inference (Backend):** The selected model (loaded in `app.main` and passed to the router) performs inference on each processed chunk.
+5.  **Results:** Predictions (label and confidence) for each chunk are returned. The web UI aggregates and displays these results for each model. The CLI prints them.
 
-The project includes unit tests to verify certain functionalities.
+For a more detailed workflow, see `workflow.md`.
 
-**Running Tests:**
-Currently, tests can be run by directly executing the test files. The main test file is for audio preprocessing:
+## 7. Testing
+
+The `app/tests/` directory is intended for unit and integration tests.
+Currently, there are no specific test files like `test_audio_preprocessing.py` present in the latest file listing.
+To run tests (if/when available, e.g., using `pytest`):
 ```bash
-python app/tests/test_audio_preprocessing.py
+pytest app/tests/
 ```
+You may need to install `pytest`: `pip install pytest`.
+Test coverage should ideally include:
+*   Audio processing utilities.
+*   Model loading and inference logic.
+*   API endpoint behavior.
+*   CLI command execution.
 
-**Test Coverage:**
-*   `app/tests/test_audio_preprocessing.py`: Tests the `process_audio_for_model` function, ensuring correct output shape, data type, and value range for the processed spectrograms.
+## 8. Deployment
 
-More tests can be added to cover model loading, prediction logic, and CLI behavior.
+A `Dockerfile` is provided for containerizing the application.
 
-## 7. Deployment (Conceptual)
+### 8.1. Using Docker
 
-Here are some general guidelines for deploying this application.
+1.  **Build the Docker image:**
+    ```bash
+    docker build -t deepfake_audio_detector .
+    ```
 
-### 7.1. Using Docker (Recommended)
+2.  **Run the Docker container:**
+    ```bash
+    docker run -d -p 8000:8000 --env-file .env deepfake_audio_detector
+    ```
+    *   Ensure your `.env` file is configured, especially if `MODEL_DIR` needs to be different or if models are mounted via volumes.
+    *   To use models from your host machine instead of those copied into the image (if the Dockerfile doesn't copy them or you want to override):
+        ```bash
+        docker run -d -p 8000:8000 --env-file .env -v /path/to/your/models_on_host:/app/models deepfake_audio_detector
+        ```
+        (Ensure `MODEL_DIR` in your `.env` points to `/app/models` for this to work correctly inside the container).
 
-A `Dockerfile` is provided to build a container image for the application.
+### 8.2. Other Considerations
 
-**Build the Docker Image:**
-```bash
-docker build -t deepfake_audio_detector .
-```
+*   **Production Web Server:** For production, consider running Uvicorn with Gunicorn as a process manager: `gunicorn -k uvicorn.workers.UvicornWorker app.main:app -w 4 --bind 0.0.0.0:8000`.
+*   **Environment Variables:** Always use environment variables for configuration in production.
+*   **Model Storage:** For larger deployments, consider storing models in a dedicated artifact repository or cloud storage.
 
-**Run the Docker Container:**
-```bash
-docker run -d -p 8000:8000 --env-file .env -v /path/to/your/models_on_host:/app/models deepfake_audio_detector
-```
-*   `-d`: Run in detached mode.
-*   `-p 8000:8000`: Map port 8000 of the host to port 8000 in the container (adjust if your app uses a different port).
-*   `--env-file .env`:  Pass environment variables from your local `.env` file to the container. This is useful for managing configurations like model names without rebuilding the image. Ensure your `.env` file is present and correctly configured.
-*   `-v /path/to/your/models_on_host:/app/models`: **Important for models.** This mounts your local model directory into the container at `/app/models`. This is generally preferred over copying models into the image if models are large or change frequently. Ensure `MODEL_DIR` in your container's environment (via `.env`) is set to `/app/models` or the path you use inside the container. The Dockerfile now copies the `app/models` directory from the build context, so this volume mount is an alternative if you want to use models external to the build context.
+## 9. Contributing
 
-### 7.2. Other Considerations
-
-*   **Production Web Server:** While Uvicorn is great for development, for production, consider running it behind a more robust server like Gunicorn managing Uvicorn workers, or using a managed cloud service.
-*   **Environment Variables:** Ensure all sensitive or environment-specific configurations are managed through environment variables (leveraging the `.env` file for local development and actual environment variables in production).
-*   **Model Storage:** For larger deployments, models might be stored in cloud storage (like AWS S3, Google Cloud Storage) and downloaded to the application instances as needed.
-*   **Scalability:** Depending on the load, you might need to deploy multiple instances of the application behind a load balancer.
+Contributions are welcome!
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature-name`).
+3.  Make your changes. Adhere to coding standards and add tests if applicable.
+4.  Commit your changes (`git commit -m 'Add some feature'`).
+5.  Push to the branch (`git push origin feature/your-feature-name`).
+6.  Open a Pull Request.
 
 This guide should help you get started with the Deepfake Audio Detection project. If you encounter any issues, please refer to the source code and ensure your environment is set up correctly.

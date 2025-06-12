@@ -7,111 +7,111 @@ This document outlines the complete data flow and processing pipeline for the De
 The application processes an audio file uploaded by the user, runs predictions using four different pre-trained models, and displays the results for each model.
 
 ```
-+-------------------+      +----------------------+      +---------------------+      +--------------------+      +----------------------+
-|   User Interface  |----->|  FastAPI Backend     |----->|  Audio Processing   |----->|  Model Inference   |----->|   User Interface     |
-| (index.html, JS)  |      | (main.py, predict.py)|      | (predict.py utils)  |      |(predict.py, models)|      | (JS updates HTML)    |
-+-------------------+      +----------------------+      +---------------------+      +--------------------+      +----------------------+
-        |                                                                                                                  ^
-        | 1. Upload Audio                                                                                                  | 5. Display Results
-        |------------------------------------------------------------------------------------------------------------------|
-                                        | 2. HTTP POST Requests (one per model)                                            |
-                                        |----------------------------------------------------------------------------------|
-                                                                | 3. Process Audio & Predict (for each model)              |
-                                                                |----------------------------------------------------------|
-                                                                                        | 4. Return JSON Predictions (for each model) |
-                                                                                        |---------------------------------------------|
++-------------------+     +------------------------------------+     +------------------------------------+     +------------------------------------+      +----------------------+
+|   User Interface  |---->|  FastAPI Backend                   |---->|  Audio Processing                  |---->|  Model Inference                   |----->|   User Interface     |
+| (index.html, JS)  |     | (main.py, prediction_pipeline.py)  |     | (prediction_pipeline.py utils)     |     |(prediction_pipeline.py, models)    |      | (JS updates HTML)    |
++-------------------+     +------------------------------------+     +------------------------------------+     +------------------------------------+      +----------------------+
+        |                                                                                                                                                              ^
+        | 1. Upload Audio (Drag & Drop file)                                                                                                                           | 6. Display Results
+        |--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+                                        | 2. HTTP POST Requests (one per model to /predict/)                                                                           |
+                                        |------------------------------------------------------------------------------------------------------------------------------|
+                                                                                | 3. File Reception & Initial Validation                                               |
+                                                                                |--------------------------------------------------------------------------------------|
+                                                                                                        | 4. Audio Segmentation & Spectrogram Generation (per chunk)   |
+                                                                                                        |--------------------------------------------------------------|
+                                                                                                                         | 5. Return JSON Predictions (for each model) |
+                                                                                                                         |---------------------------------------------|
 ```
 
 **Flow Steps:**
 
 1.  **Audio Upload (Frontend):**
-    *   The user visits the web application (`index.html`).
-    *   The user selects an audio file using the file input field.
-    *   Upon clicking "Detect Deepfake", the JavaScript (`static/script.js`) initiates the process.
+    *   The user visits the web application (`app/templates/index.html`).
+    *   The user selects an audio file by dragging and dropping onto the designated area.
+    *   Upon clicking "Detect Deepfake", the JavaScript (`app/static/script.js`) initiates the process.
 
 2.  **HTTP POST Requests (Frontend to Backend):**
-    *   The JavaScript sends four separate asynchronous HTTP POST requests to the backend.
-    *   Each request targets the `/predict_audio` endpoint.
-    *   A `model_name` query parameter is appended to each request URL (e.g., `/predict_audio?model_name=cnn_small`, `/predict_audio?model_name=cnn_large`, etc.) to specify which model to use for that request.
-    *   The audio file is included in the `FormData` of each request under the key `"audio_file"`.
+    *   The JavaScript sends separate asynchronous HTTP POST requests to the backend for each model defined in its `modelNames` array (e.g., "CNN_Small", "CNN_Large", "ViT_Small", "ViT_Large").
+    *   Each request targets the `/predict/` endpoint (defined in `app/routers/prediction_pipeline.py`).
+    *   The audio file (from `audioFile.files[0]`) and the `model_name` are included in the `FormData` of each request.
 
 3.  **File Reception and Audio Processing (Backend):**
-    *   The FastAPI backend (`app/main.py`, `app/routers/predict.py`) receives each of the four requests.
-    *   For each request, the `predict_audio` endpoint in `app/routers/predict.py` handles the uploaded `audio_file` and the `model_name`.
-    *   The raw audio bytes are read.
-    *   The audio is converted to a mono waveform.
-    *   The waveform is split into 3-second chunks (or the duration specified in `app/config.py:settings.CHUNK_DURATION_SECONDS`). Padding is applied to the last chunk if necessary.
-    *   Each chunk undergoes further processing via `process_audio_for_model` in `app/routers/predict.py`:
-        *   **Resampling:** Audio is resampled to `settings.TARGET_SAMPLE_RATE` (e.g., 16000 Hz).
-        *   **Padding/Trimming:** Ensures the chunk matches `settings.CHUNK_DURATION_SECONDS` at the target sample rate.
-        *   **Mel Spectrogram:** Converted to a Mel spectrogram using `librosa.feature.melspectrogram` with parameters like `N_FFT`, `HOP_LENGTH`, `N_MELS` from `settings`.
-        *   **Logarithmic Scaling:** Converted to decibels (dB) using `librosa.power_to_db`.
-        *   **Normalization:** Normalized to a [0, 1] range based on `settings.MIN_DB_LEVEL`.
-        *   **Dimension Adjustment:** The spectrogram is padded or truncated to ensure its dimensions match `(settings.N_MELS, settings.SPECTROGRAM_WIDTH)`.
-        *   **Batch & Channel Dimension:** Reshaped to `(1, 1, N_MELS, SPECTROGRAM_WIDTH)` to match model input requirements.
+    *   The FastAPI backend (`app/main.py`, `app/routers/prediction_pipeline.py`) receives each request at the `/predict/` endpoint.
+    *   The `predict_endpoint` function in `app/routers/prediction_pipeline.py` handles the uploaded `file` (as `UploadFile`) and the `model_name` (from `Form` data).
+    *   The audio file is saved temporarily.
+    *   The `predict_audio_file` function is called, which internally uses `segment_audio` (from `app.audio_processing.audio_segmentation`) to split the audio into chunks (e.g., 3-second duration as per `settings.CHUNK_DURATION_SECONDS`, with potential overlap defined by `settings.SEGMENT_OVERLAP_SECONDS`).
+    *   Each chunk undergoes further processing within `predict_single_segment`, which calls:
+        *   `create_mel_spectrogram` (from `app.audio_processing.spectrogram_processing`): Converts audio chunk to a Mel spectrogram using parameters from `settings` (e.g., `TARGET_SAMPLE_RATE`, `N_MELS`, `N_FFT`, `HOP_LENGTH`, `LOUDNESS_LUFS`).
+        *   `preprocess_spectrogram_to_tensor` (from `app.audio_processing.spectrogram_processing`): Normalizes the spectrogram using `settings.PIXEL_MEAN` and `settings.PIXEL_STD`, resizes it to `settings.IMAGE_SIZE`, and converts it to a tensor. The tensor is reshaped to `(1, 1, IMAGE_SIZE, IMAGE_SIZE)` or similar for model input.
 
 4.  **Model Inference (Backend):**
-    *   The appropriate pre-loaded PyTorch model (selected based on the `model_name` from the request) is retrieved from `request.app.state.pytorch_models`.
-    *   The processed spectrogram tensor for each chunk is moved to the appropriate device (CPU/GPU).
-    *   The model performs inference (`model(input_tensor)`).
-    *   The output logits are processed to determine the predicted label ("real" or "fake") and confidence score.
-    *   A JSON response containing the filename, chunk details (if applicable, though current implementation averages or takes the most relevant chunk implicitly per request), prediction, confidence, model used, and raw model output is prepared for each chunk. The current `/predict_audio` endpoint returns a list of predictions, one for each chunk processed from the input file.
+    *   The appropriate pre-loaded PyTorch model (selected based on `model_name`) is retrieved from `request.app.state.pytorch_models`.
+    *   The processed spectrogram tensor for each chunk is moved to the device (CPU/GPU).
+    *   The model performs inference on each chunk (`model(input_tensor)`).
+    *   The output logits from all chunks are collected.
+    *   `aggregate_predictions` function processes these logits:
+        *   It may apply outlier removal.
+        *   It aggregates chunk predictions using the method specified in `settings.AGGREGATION_METHOD` (e.g., "mean_probs", "majority_vote").
+        *   It may apply class balancing based on `settings.BIAS_METHOD` and `settings.REAL_BIAS_FACTOR`.
+        *   The final aggregated probabilities and predicted class index are determined.
+    *   Prediction reliability is assessed.
 
 5.  **Return JSON Predictions (Backend to Frontend):**
-    *   The backend sends the JSON response back to the frontend for each of the four initial requests.
+    *   A JSON response is prepared containing: filename, model used, predicted class index and name, aggregated probabilities, final confidence (adjusted by reliability), aggregation method, number of segments processed, reliability assessment, bias reduction details, and raw output (logits from chunks).
+    *   The backend sends this JSON response back to the frontend for each of the initial requests.
 
 6.  **Display Results (Frontend):**
-    *   The JavaScript (`static/script.js`) receives the four responses (or errors).
-    *   `Promise.allSettled` is used to handle all responses.
+    *   The JavaScript (`app/static/script.js`) receives the responses using `Promise.allSettled`.
     *   For each model's response:
-        *   The corresponding HTML section (e.g., `<div id="cnn_small_results">`) is updated.
-        *   The prediction (label and confidence) and other details are displayed within a `<pre>` tag for that model.
-        *   If an error occurred for a specific model, the error message is displayed in its section.
+        *   A new `div` with class `result-item-card` is dynamically created and appended to the `resultsContainer` in `app/templates/index.html`.
+        *   The card is populated with the model name, filename, prediction (label and confidence), and raw output.
+        *   The card's appearance (e.g., background color) might change based on the prediction (e.g., `status-real`, `status-fake`).
+        *   If an error occurred for a specific model, the error message is displayed in its card.
 
 ## 2. Model Loading and Inference
 
 *   **Model Loading (`app/main.py`):**
-    *   Models are loaded during the application startup sequence, triggered by the `@app.on_event("startup")` decorator.
-    *   The `load_models` asynchronous function iterates through model names defined in `app/config.py` (e.g., `settings.CNN_SMALL_MODEL_NAME`, `settings.VIT_LARGE_MODEL_NAME`).
+    *   Models are loaded during application startup via the `load_models` function (triggered by `@app.on_event("startup")`).
+    *   It iterates through model filenames specified in `app/config.py:Settings` (e.g., `settings.CNN_SMALL_MODEL_NAME`).
     *   For each model:
-        *   The model architecture (e.g., `CNN_Audio`, `ViT_Audio` from `app/model_definitions.py`) is instantiated with hardcoded parameters specific to each model type (e.g., number of channels, patch size, embedding dimensions). **Note:** These parameters must match the configuration used during model training.
-        *   The pre-trained model weights are loaded from `.pth` files located in the `settings.MODEL_DIR` (e.g., `app/models/`). `torch.load()` with `weights_only=False` is used (this might be necessary if the checkpoint contains non-weight data, but `weights_only=True` is generally safer if applicable).
-        *   The model is set to evaluation mode (`model.eval()`).
-        *   The loaded model is stored in a dictionary `app.state.pytorch_models` keyed by its name (e.g., "cnn_small").
-    *   The application uses the device (CUDA or CPU) detected by PyTorch.
+        *   The corresponding architecture (e.g., `CNN_Audio`, `ViT_Audio` from `app/model_definitions.py`) is instantiated. Parameters for these architectures (like number of channels, patch size, embedding dimensions) are hardcoded within `app/main.py` during instantiation.
+        *   Model weights are loaded from `.pth` files in `settings.MODEL_DIR` using `torch.load(..., weights_only=False)`.
+        *   The model is set to evaluation mode (`model.eval()`) and moved to the appropriate device (CUDA/CPU).
+        *   Loaded models are stored in `app.state.pytorch_models`, keyed by a simplified name (e.g., "cnn_small").
 
-*   **Inference (`app/routers/predict.py`):**
-    *   When a `/predict_audio` request arrives, the specified `model_name` is used to retrieve the corresponding model object from `app.state.pytorch_models`.
-    *   The input tensor (processed audio chunk) is passed to the model: `outputs = model(input_tensor)`.
-    *   Predictions are made within a `torch.no_grad()` context to disable gradient calculations, saving memory and computation.
-    *   The raw output (logits) is converted to a NumPy array.
-    *   If the output has multiple classes, `np.argmax` finds the predicted class index. Confidence is the softmax probability of that class (or the logit value itself if softmax is not explicitly applied post-model).
-    *   If the output is a single logit (binary classification), a threshold (e.g., 0.5 if sigmoid applied, or 0 if raw logits) determines the class.
-    *   Labels are mapped using `settings.LABELS`.
+*   **Inference (`app/routers/prediction_pipeline.py`):**
+    *   When a `/predict/` request arrives, the `model_name` from the form data is used to retrieve the model object from `request.app.state.pytorch_models`.
+    *   Input tensors (processed audio chunks) are passed to the model: `output_logits = model(input_tensor)`.
+    *   This is done within a `torch.no_grad()` context.
+    *   The raw logits are collected and then aggregated as described in Step 4 of "Data Flow Overview".
+    *   The final predicted class index is determined by `np.argmax` on the aggregated probabilities.
+    *   Labels are mapped using `settings.LABELS` (e.g., `{0: "real", 1: "fake"}`).
 
 ## 3. Frontend Result Display
 
 *   **HTML Structure (`app/templates/index.html`):**
     *   The main results area is `<div id="resultsContainer">`.
-    *   Inside, there's an initial placeholder message.
-    *   Four dedicated divs are present for each model's output:
-        *   `<div id="cnn_small_results" class="model-result"><h4>CNN Small</h4><pre></pre></div>`
-        *   `<div id="cnn_large_results" class="model-result"><h4>CNN Large</h4><pre></pre></div>`
-        *   `<div id="vit_small_results" class="model-result"><h4>ViT Small</h4><pre></pre></div>`
-        *   `<div id="vit_large_results" class="model-result"><h4>ViT Large</h4><pre></pre></div>`
-    *   These `model-result` divs are initially hidden.
+    *   It initially contains a placeholder message.
+    *   There are no pre-defined static divs for each model's output; results are displayed dynamically.
 
 *   **JavaScript Logic (`app/static/script.js`):**
     *   When a new file is submitted:
-        *   All previous results in the `<pre>` tags are cleared.
-        *   All `model-result` divs are hidden.
-        *   The main placeholder is hidden.
-        *   A loader is displayed.
-    *   After receiving responses from all four model prediction requests (via `Promise.allSettled`):
+        *   The `resultsContainer` is cleared.
+        *   The placeholder is hidden.
+        *   A loader (`loaderContainer`) is displayed.
+    *   After receiving responses from all model prediction requests (via `Promise.allSettled`):
         *   The loader is hidden.
         *   For each model's result:
-            *   The corresponding `<pre>` tag (e.g., `cnnSmallResultsPre`) is populated with formatted prediction details (filename, model used, prediction, confidence, raw output) or an error message.
-            *   The corresponding `model-result` div (e.g., `cnnSmallResultsDiv`) is made visible (`style.display = "block"`).
+            *   A `div` element with class `result-item-card` is created.
+            *   This card is populated with:
+                *   Model name.
+                *   Filename.
+                *   Prediction (label and confidence).
+                *   Raw output (from the JSON response).
+            *   The card is styled based on the prediction (e.g., `status-real` or `status-fake` class).
+            *   The card is appended to `resultsContainer`.
+        *   Error messages are also displayed within these dynamic cards if a request fails.
 
 ## 4. System Extensibility
 
@@ -123,21 +123,21 @@ The application processes an audio file uploaded by the user, runs predictions u
 
 *   **Changing the Workflow / Adding Models:**
     *   **Adding a New Model:**
-        1.  **Model File:** Place the new model's weights file (e.g., `.pth`) in the `app/models/` directory.
-        2.  **Configuration (`app/config.py`):** Add a new setting for the model's filename, e.g., `NEW_MODEL_NAME: str = "new_model.pth"`.
-        3.  **Model Definition (`app/model_definitions.py`):** If the new model uses a new architecture, define its class here.
+        1.  **Model File:** Place the new model's weights file (e.g., `.pth`) in the `settings.MODEL_DIR` (e.g.,`app/models/`).
+        2.  **Configuration (`app/config.py`):** Add a new setting in `Settings` class for the model's filename, e.g., `NEW_MODEL_XYZ_NAME: str = "new_model_xyz.pth"`.
+        3.  **Model Definition (`app/model_definitions.py`):** If the new model uses a new architecture not already present, define its PyTorch `nn.Module` class here.
         4.  **Model Loading (`app/main.py`):**
-            *   Add logic in the `load_models` function to instantiate and load the new model, similar to existing models. This includes defining its specific parameters if hardcoded.
-            *   Add its name to the `current_model_paths` dictionary.
+            *   In the `load_models` function, add an `if hasattr(settings, "NEW_MODEL_XYZ_NAME") ...` block.
+            *   Inside, add the new model key (e.g., "new_model_xyz") and its path to `current_model_paths`.
+            *   Add an `elif model_name == "new_model_xyz":` block to instantiate the model (from `app.model_definitions.py`) with its specific parameters (these might need to be hardcoded in `app/main.py` or derived from `settings`).
+            *   Ensure it's loaded into the `pytorch_models` dictionary.
         5.  **Frontend (`app/static/script.js`):**
-            *   Add the new model's name (e.g., "new_model") to the `modelNames` array in `script.js`.
-        6.  **HTML (`app/templates/index.html`):**
-            *   Add a new results div for the new model in `resultsContainer`, e.g., `<div id="new_model_results" class="model-result" style="display: none;"><h4>New Model</h4><pre></pre></div>`.
-        7.  **JavaScript (`app/static/script.js`):**
-            *   Update `modelResultElements` map to include the new model's result div and pre tag.
+            *   Add the new model's key (e.g., "New_Model_Xyz" - matching the key used in `FormData` which `app/main.py` will use for `pytorch_models` dict) to the `modelNames` array. The script uses these names for display and for the `model_name` field in the form data.
+        6.  **HTML (`app/templates/index.html`):** No changes are strictly necessary in the HTML as the results are dynamically generated by `app/static/script.js`.
+        7.  **JavaScript (`app/static/script.js`):** No changes are typically needed here if the new model follows the same prediction result structure, as the script iterates through `modelNames` and creates result cards dynamically.
     *   **Modifying Model Interaction:**
-        *   If instead of calling all models, a selection mechanism is reintroduced, the frontend JavaScript would need to be changed to send requests only for selected models.
-        *   The backend `/predict_audio` endpoint already supports individual model prediction via the `model_name` parameter.
+        *   The backend `/predict/` endpoint supports individual model prediction via the `model_name` form field.
+        *   The frontend `app/static/script.js` currently sends requests for all models listed in its `modelNames` array. To change this (e.g., allow user selection), the JavaScript logic for creating and sending `FormData` would need modification.
         *   For more complex routing or model chaining, new endpoints or modifications to `predict_audio` might be necessary.
 
 *   **Updating Models:**
