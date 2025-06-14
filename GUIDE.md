@@ -33,8 +33,8 @@ Here's an outline of the key directories and files within the project:
 ├── Dockerfile                  # For building a Docker container
 ├── GUIDE.md                    # Detailed user guide
 ├── workflow.md                 # Description of the application workflow
-├── requirements.txt            # Python dependencies for pip
-├── environment.yml             # Conda environment definition (alternative)
+├── deploy-env.yml              # Conda environment for deploy
+├── audio-env.yml               # Conda environment for train(alternative)
 ├── .env                        # Example environment file (create your own from this or use .env.example)
 └── README.md                   # Project overview (this file should be similar to README.md)
 ```
@@ -70,7 +70,7 @@ Follow these steps to set up the project environment:
 
 3.  **Install dependencies:**
     ```bash
-    pip install -r requirements.txt
+    conda env update -f deploy-env.yml --prune
     ```
     (Note: The `environment.yml` is an alternative for Conda users but `requirements.txt` is the primary source of dependencies).
 

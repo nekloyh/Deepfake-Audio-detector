@@ -63,9 +63,9 @@ This project is a Deepfake Audio Detection system that can identify whether an a
         conda activate deepfake_audio_env
         ```
 
-3.  **Install dependencies:**
+3.  **Install dependencies (for deploy phase):**
     ```bash
-    pip install -r requirements.txt
+    conda env create -f deploy-env.yml
     ```
 
 4.  **Configure Environment Variables:**
